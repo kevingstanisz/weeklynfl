@@ -40,19 +40,30 @@ public class ScrapeBetOnline {
                     HtmlElement tdSp2Odds = htmlElement.getFirstByXPath("tr[@class='otherline']/td[@class='odds bdevtt displayOdds']");
                     HtmlElement tdMl1 = htmlElement.getFirstByXPath("tr[@class='h2hSeq firstline']/td[@class='odds bdevtt moneylineodds displayOdds']");
                     HtmlElement tdMl2 = htmlElement.getFirstByXPath("tr[@class='otherline']/td[@class='odds bdevtt moneylineodds displayOdds']");
-                    HtmlElement tdOver = htmlElement.getFirstByXPath("tr[@class='h2hSeq firstline']/td[@class='hdcp bdevtt ']");
-                    HtmlElement tdUnder = htmlElement.getFirstByXPath("tr[@class='otherline']/td[@class='hdcp bdevtt ']");
-                    HtmlElement tdOverOdds = htmlElement.getFirstByXPath("tr[@class='h2hSeq firstline']/td[@class='odds bdevtt displayOdds']");
-                    HtmlElement tdUnderOdds = htmlElement.getFirstByXPath("tr[@class='otherline']/td[@class='odds bdevtt displayOdds']");
+                    HtmlElement tdOver = htmlElement.getFirstByXPath("tr[@class='h2hSeq firstline']/td[@class='hdcp bdevtt '][2]");
+                    HtmlElement tdUnder = htmlElement.getFirstByXPath("tr[@class='otherline']/td[@class='hdcp bdevtt '][2]");
+                    HtmlElement tdOverOdds = htmlElement.getFirstByXPath("tr[@class='h2hSeq firstline']/td[@class='odds bdevtt displayOdds'][2]");
+                    HtmlElement tdUnderOdds = htmlElement.getFirstByXPath("tr[@class='otherline']/td[@class='odds bdevtt displayOdds'][2]");
 
+                    System.out.println(tdTeam1.getFirstChild().asText());
 
-//                    if(tdTeam1 != null) {
-//                        gameLines.add(new GameLine(tdTeam1, tdTeam2, tdSp1, tdSp2, tdSp1Odds, tdSp2Odds, tdMl1, tdMl2, tdOver, tdUnder, tdOverOdds, tdUnderOdds));
-//                    }
+                    if(tdTeam1 != null) {
+                        gameLines.add(new GameLine(
+                                tdTeam1 != null ? tdTeam1.getFirstChild().asText() : null,
+                                tdTeam2 != null ? tdTeam2.getFirstChild().asText() : null,
+                                tdSp1 != null ? tdSp1.getFirstChild().asText() : " ",
+                                tdSp2 != null ? tdSp2.getFirstChild().asText() : " ",
+                                tdSp1Odds != null ? tdSp1Odds.getFirstChild().asText() : " ",
+                                tdSp2Odds != null ? tdSp2Odds.getFirstChild().asText() : " ",
+                                tdMl1 != null ? tdMl1.getFirstChild().asText() : " ",
+                                tdMl2 != null ? tdMl2.getFirstChild().asText() : " ",
+                                tdOver != null ? tdOver.getFirstChild().asText() : " ",
+                                tdUnder != null ? tdUnder.getFirstChild().asText() : " ",
+                                tdOverOdds != null ? tdOverOdds.getFirstChild().asText() : " ",
+                                tdUnderOdds != null ? tdUnderOdds.getFirstChild().asText() : " "));
+                    }
                 }
             }
-
-//            System.out.println(page.asXml());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -62,6 +73,10 @@ public class ScrapeBetOnline {
 
     public static void main(String[] args) {
         ScrapeBetOnline scrapeBetOnline = new ScrapeBetOnline();
-        scrapeBetOnline.getLines();
+        List<GameLine> gameLines = scrapeBetOnline.getLines();
+
+        for(GameLine gameLine : gameLines) {
+            System.out.println(gameLine.toString());
+        }
     }
 }
