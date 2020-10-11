@@ -14,6 +14,14 @@ public class ScrapeBetOnline {
     public ScrapeBetOnline() {
     }
 
+    private String getHtmlElementChild(HtmlElement htmlElement) {
+        if(htmlElement == null || !htmlElement.hasChildNodes()) {
+            return " ";
+        }
+
+        return htmlElement.getFirstChild().asText();
+    }
+
     public List<GameLine> getLines() {
         List<GameLine> gameLines = new ArrayList<GameLine>();
 
@@ -45,22 +53,21 @@ public class ScrapeBetOnline {
                     HtmlElement tdOverOdds = htmlElement.getFirstByXPath("tr[@class='h2hSeq firstline']/td[@class='odds bdevtt displayOdds'][2]");
                     HtmlElement tdUnderOdds = htmlElement.getFirstByXPath("tr[@class='otherline']/td[@class='odds bdevtt displayOdds'][2]");
 
-                    System.out.println(tdTeam1.getFirstChild().asText());
-
                     if(tdTeam1 != null) {
                         gameLines.add(new GameLine(
-                                tdTeam1 != null ? tdTeam1.getFirstChild().asText() : null,
-                                tdTeam2 != null ? tdTeam2.getFirstChild().asText() : null,
-                                tdSp1 != null ? tdSp1.getFirstChild().asText() : " ",
-                                tdSp2 != null ? tdSp2.getFirstChild().asText() : " ",
-                                tdSp1Odds != null ? tdSp1Odds.getFirstChild().asText() : " ",
-                                tdSp2Odds != null ? tdSp2Odds.getFirstChild().asText() : " ",
-                                tdMl1 != null ? tdMl1.getFirstChild().asText() : " ",
-                                tdMl2 != null ? tdMl2.getFirstChild().asText() : " ",
-                                tdOver != null ? tdOver.getFirstChild().asText() : " ",
-                                tdUnder != null ? tdUnder.getFirstChild().asText() : " ",
-                                tdOverOdds != null ? tdOverOdds.getFirstChild().asText() : " ",
-                                tdUnderOdds != null ? tdUnderOdds.getFirstChild().asText() : " "));
+                                getHtmlElementChild(tdTeam1),
+                                getHtmlElementChild(tdTeam2),
+                                getHtmlElementChild(tdSp1),
+                                getHtmlElementChild(tdSp2),
+                                getHtmlElementChild(tdSp1Odds),
+                                getHtmlElementChild(tdSp2Odds),
+                                getHtmlElementChild(tdMl1),
+                                getHtmlElementChild(tdMl2),
+                                getHtmlElementChild(tdOver),
+                                getHtmlElementChild(tdUnder),
+                                getHtmlElementChild(tdOverOdds),
+                                getHtmlElementChild(tdUnderOdds)
+                        ));
                     }
                 }
             }
