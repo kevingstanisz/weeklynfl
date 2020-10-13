@@ -1,12 +1,22 @@
 package com.kev.weeklynfl.games;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.gargoylesoftware.htmlunit.html.DomNode;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import org.apache.commons.lang3.math.Fraction;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import java.util.UUID;
 
+@Entity
+@JsonIgnoreProperties(allowGetters = true)
 public class GameLine {
+
+    @Id
+    private UUID id;
+
     private String team1;
     private String team2;
     private double sp1;
