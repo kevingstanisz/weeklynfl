@@ -9,8 +9,7 @@ import java.util.Date;
 @SpringBootApplication
 public class WeeklynflApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(WeeklynflApplication.class, args);
+	public static void main(String[] args) {  SpringApplication.run(WeeklynflApplication.class, args);
 	}
 
 }

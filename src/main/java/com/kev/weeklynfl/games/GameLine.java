@@ -1,6 +1,7 @@
 package com.kev.weeklynfl.games;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.gargoylesoftware.htmlunit.html.DomNode;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import org.apache.commons.lang3.math.Fraction;
@@ -30,6 +31,22 @@ public class GameLine {
     private Integer overOdds;
     private Integer underOdds;
 
+    public GameLine(UUID id, String team1, String team2, double sp1, double sp2, Integer sp1Odds, Integer sp2Odds, Integer ml1, Integer ml2, double over, double under, Integer overOdds, Integer underOdds) {
+        this.id = id;
+        this.team1 = team1;
+        this.team2 = team2;
+        this.sp1 = sp1;
+        this.sp2 = sp2;
+        this.sp1Odds = sp1Odds;
+        this.sp2Odds = sp2Odds;
+        this.ml1 = ml1;
+        this.ml2 = ml2;
+        this.over = over;
+        this.under = under;
+        this.overOdds = overOdds;
+        this.underOdds = underOdds;
+    }
+
     public GameLine(String htmlTeam1, String htmlTeam2, String htmlSp1, String htmlSp2, String htmlSp1Odds, String htmlSp2Odds, String htmlMl1, String htmlMl2, String htmlOver, String htmlUnder, String htmlOverOdds, String htmlUnderOdds) {
         this.team1 = htmlTeam1;
         this.team2 = htmlTeam2;
@@ -45,21 +62,47 @@ public class GameLine {
         this.underOdds = Integer.parseInt(htmlUnderOdds.replace(" ", "0"));
     }
 
-    @Override
-    public String toString() {
-        return "GameLine{" +
-                "team1='" + team1 + '\'' +
-                ", team2='" + team2 + '\'' +
-                ", sp1=" + sp1 +
-                ", sp2=" + sp2 +
-                ", sp1Odds=" + sp1Odds +
-                ", sp2Odds=" + sp2Odds +
-                ", ml1=" + ml1 +
-                ", ml2=" + ml2 +
-                ", over=" + over +
-                ", under=" + under +
-                ", overOdds=" + overOdds +
-                ", underOdds=" + underOdds +
-                '}';
+    public UUID getId() {
+        return id;
+    }
+
+    public String getTeam1() {
+        return team1;
+    }
+
+    public String getTeam2() {
+        return team2;
+    }
+
+    public Integer getSp1Odds() {
+        return sp1Odds;
+    }
+
+    public Integer getSp2Odds() {
+        return sp2Odds;
+    }
+
+    public Integer getMl1() {
+        return ml1;
+    }
+
+    public Integer getMl2() {
+        return ml2;
+    }
+
+    public double getOver() {
+        return over;
+    }
+
+    public double getUnder() {
+        return under;
+    }
+
+    public Integer getOverOdds() {
+        return overOdds;
+    }
+
+    public Integer getUnderOdds() {
+        return underOdds;
     }
 }

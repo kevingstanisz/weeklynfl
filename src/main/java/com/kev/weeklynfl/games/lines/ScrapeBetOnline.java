@@ -4,6 +4,7 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.kev.weeklynfl.games.GameLine;
+import com.kev.weeklynfl.games.WeekNumber;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -85,5 +86,8 @@ public class ScrapeBetOnline {
         for(GameLine gameLine : gameLines) {
             System.out.println(gameLine.toString());
         }
+
+        WeekNumber weekNumber = new WeekNumber();
+
     }
 }
