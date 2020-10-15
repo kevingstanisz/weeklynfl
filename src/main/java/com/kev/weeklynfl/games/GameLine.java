@@ -48,7 +48,7 @@ public class GameLine {
     }
 
     public GameLine(String htmlTeam1, String htmlTeam2, String htmlSp1, String htmlSp2, String htmlSp1Odds, String htmlSp2Odds, String htmlMl1, String htmlMl2, String htmlOver, String htmlUnder, String htmlOverOdds, String htmlUnderOdds) {
-        String IntegerMAX_VALUE = "2147483647";
+        String IntegerMAX_VALUE = "32767";
 
         this.team1 = htmlTeam1;
         this.team2 = htmlTeam2;

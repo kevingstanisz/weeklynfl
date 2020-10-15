@@ -13,19 +13,23 @@ import java.util.List;
 @RequestMapping("api/v1/games")
 public class GameLineController {
 
-    private final GameLineService gameLineService;
+    private final GameService gameService;
     private final ListGamesService listGamesService;
 
 
     @Autowired
-    public GameLineController(GameLineService gameLineService, ListGamesService listGamesService) {
-        this.gameLineService = gameLineService;
+    public GameLineController(GameService gameService, ListGamesService listGamesService) {
+        this.gameService = gameService;
         this.listGamesService = listGamesService;
     }
 
-    @PostMapping
+    @PostMapping(path = "savelines")
     public void saveGameLines(){
-        gameLineService.saveGameLines();
+        gameService.saveGameLines();
+    }
+
+    @PostMapping(path = "getresults")
+    public void saveGameResults(){ gameService.getResults();
     }
 
     @GetMapping

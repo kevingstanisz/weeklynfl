@@ -3,21 +3,26 @@ package com.kev.weeklynfl.games;
 import com.kev.weeklynfl.games.lines.ScrapeBetOnline;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Service;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
 @Service
-public class GameLineService {
+public class GameService {
     private final JdbcTemplate jdbcTemplate;
     private final GameRepository gameRepository;
 
     @Autowired
-    public GameLineService(JdbcTemplate jdbcTemplate, GameRepository gameRepository) {
+    public GameService(JdbcTemplate jdbcTemplate, GameRepository gameRepository) {
         this.jdbcTemplate = jdbcTemplate;
         this.gameRepository = gameRepository;
     }
@@ -33,7 +38,7 @@ public class GameLineService {
         // List<GameLine> identifiedGames = new ArrayList<GameLine>();
 
         for (GameLine gameLine : gameLines) {
-            String sql = "SELECT id, home, away FROM games WHERE (home='" + teamUUID.get(gameLine.getTeam1()) + "' OR home='" + teamUUID.get(gameLine.getTeam2()) + "') AND week = 6";
+            String sql = "SELECT id, home, away FROM games WHERE (home='" + teamUUID.get(gameLine.getTeam1()) + "' OR home='" + teamUUID.get(gameLine.getTeam2()) + "') AND week = " + weekNumber.getWeekNumber();
 
             List<UUID> gameId = jdbcTemplate.query(sql, (resultSet, i) -> {
                 return UUID.fromString(resultSet.getString("id"));
@@ -54,7 +59,6 @@ public class GameLineService {
                         gameLine.getSp2(), gameLine.getSp1(), gameLine.getSp2Odds(), gameLine.getSp1Odds(), gameLine.getMl2(), gameLine.getMl1(), gameLine.getOver(), gameLine.getUnder(), gameLine.getOverOdds(), gameLine.getUnderOdds(), gameLine.getId());
             }
         }
-
     }
 
     private Map<String, UUID> getUUIDFromTeam() {
@@ -73,6 +77,12 @@ public class GameLineService {
         return teamUUID;
     }
 
-
-
+    public void getResults() {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://api.sportradar.us/nfl/official/trial/v6/en/games/2020/REG/4/schedule.json?api_key=APIKEY")).build();
+        client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply(HttpResponse::body)
+                .thenAccept(System.out::println)
+                .join();
+    }
 }
