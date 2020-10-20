@@ -4,11 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.gargoylesoftware.htmlunit.html.DomNode;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
+import com.kev.weeklynfl.bets.Bet;
 import org.apache.commons.lang3.math.Fraction;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
@@ -30,6 +29,9 @@ public class GameLine {
     private double under;
     private Integer overOdds;
     private Integer underOdds;
+
+    @OneToOne
+    private Bet bet;
 
     public GameLine(UUID id, String team1, String team2, double sp1, double sp2, Integer sp1Odds, Integer sp2Odds, Integer ml1, Integer ml2, double over, double under, Integer overOdds, Integer underOdds) {
         this.id = id;
@@ -64,6 +66,14 @@ public class GameLine {
         this.underOdds = Integer.parseInt(htmlUnderOdds.replace(" ", IntegerMAX_VALUE));
     }
 
+
+    public Bet getBets() {
+        return bet;
+    }
+
+    public void setBets(Bet bets) {
+        this.bet = bets;
+    }
 
     public void setId(UUID id) {
         this.id = id;

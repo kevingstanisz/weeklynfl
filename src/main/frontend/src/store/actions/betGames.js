@@ -10,7 +10,7 @@ export const fetchGamesSuccess = (games) => {
 
 export const getGames = () => {
     return dispatch => {
-        axios.get('/games')
+        axios.get('/games/1')
         .then(res => {
             console.log(res.data)
             dispatch(fetchGamesSuccess(res.data))

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("api/v1/games")
@@ -35,7 +36,10 @@ public class GameLineController {
         return listGamesService.selectWeeklyGames();
     }
 
-
+    @GetMapping(path = "{id}")
+    public List<GameLine> selectWeeklyBetGames(@PathVariable("id") int id){
+        return listGamesService.selectWeeklyBetGames(id);
+    }
 
 //    @PutMapping
 //    public void saveGameLines() {

@@ -7,11 +7,13 @@ const game = props => {
 
   return (
     <tbody>
+        <br></br>
         <tr>
             <td>{props.gameinfo['team1']}</td>
             <td>
-                <input type="checkbox" id="checkbox" name={props.gameinfo['id'] + 'sp1'} value="sp1"/>
+                <input type="checkbox" id="checkbox" name={props.gameinfo['id'] + 'sp1'} value="sp1"  checked = {props.checkedSp1} onChange={props.checkboxSp1}/>
                 <label htmlFor={props.gameinfo['id'] + 'sp1'}>{props.gameinfo['sp1']} ({props.gameinfo['sp1Odds']})</label>
+                <input id="sp1Value" type="number" value={props.valueSp1}></input>
             </td>
             <td>
                 <input type="checkbox" id="checkbox" name={props.gameinfo['id'] + 'ml1'} value="ml1"/>

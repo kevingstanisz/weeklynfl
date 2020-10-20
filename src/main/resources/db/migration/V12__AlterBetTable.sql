@@ -1,0 +1,2 @@
+ALTER TABLE bets
+ADD id int NOT NULL PRIMARY KEY;

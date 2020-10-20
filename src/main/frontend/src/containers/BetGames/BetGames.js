@@ -19,12 +19,16 @@ const BetGames = props => {
     onGetGames()
   }, []);
 
+  const inputChangedHandler = ( event, gameId ) => {
+    console.log(gameId)
+    console.log(event.target.checked)
+    console.log(event.target.value)
+  }
+
   const submitHandler = (event) => {
     event.preventDefault();
 
     console.log('helllooo')
-
-    
 
     // const formData = {};
     // for (let formElementIdentifier in authForm) {
@@ -45,11 +49,25 @@ const BetGames = props => {
     // onCheckUsername(results)
   }
 
+  let gamesOutput = null;
 
   let trythis = null;
   if(games.length != 0) {
     console.log(games)
-    trythis = <Game key={games[0]['id']} gameinfo={games[0]}></Game>
+    gamesOutput = games.map(game => {
+      if(game['bets'] != null) {
+        console.log('meettooo')
+        console.log(game)
+      }
+      return <Game 
+        key={game['id']} 
+        gameinfo={game} 
+        checkboxSp1={( event ) => inputChangedHandler( event, game['id'] )}
+        checkedSp1 = {game['bets'] != null ? game['bets']['sp1'] : false}
+        valueSp1= {game['bets'] != null ? game['bets']['sp1Value'] : 0}
+        >
+      </Game>
+    })
   }
 
   return (
@@ -65,7 +83,7 @@ const BetGames = props => {
             <th>Total</th>
           </tr>
         </tbody>
-      {trythis}
+      {gamesOutput}
       </table>
       <input type="submit" value="Submit"></input>
       </form>
