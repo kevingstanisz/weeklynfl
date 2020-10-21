@@ -1,3 +1,4 @@
 export {
-    getGames
+    getGames,
+    saveBets
 } from './betGames'

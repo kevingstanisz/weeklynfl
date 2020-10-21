@@ -1,1 +1,2 @@
 export const FETCH_GAMES_SUCCESS = 'FETCH_GAMES_SUCCESS';
+export const SAVE_BETS = 'SAVE_BETS';

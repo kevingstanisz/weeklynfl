@@ -1,5 +1,6 @@
 package com.kev.weeklynfl.games;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.gargoylesoftware.htmlunit.html.DomNode;
@@ -32,6 +33,11 @@ public class GameLine {
 
     @OneToOne
     private Bet bet;
+
+    @JsonCreator
+    public GameLine(){
+
+    }
 
     public GameLine(UUID id, String team1, String team2, double sp1, double sp2, Integer sp1Odds, Integer sp2Odds, Integer ml1, Integer ml2, double over, double under, Integer overOdds, Integer underOdds) {
         this.id = id;
@@ -72,8 +78,8 @@ public class GameLine {
         return bet;
     }
 
-    public void setBets(Bet bets) {
-        this.bet = bets;
+    public void setBets(Bet bet) {
+        this.bet = bet;
     }
 
     public void setId(UUID id) {
@@ -148,6 +154,7 @@ public class GameLine {
                 ", under=" + under +
                 ", overOdds=" + overOdds +
                 ", underOdds=" + underOdds +
+                ", bet=" + bet +
                 '}';
     }
 }

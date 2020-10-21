@@ -13,6 +13,7 @@ const BetGames = props => {
 
   const dispatch = useDispatch();
   const onGetGames = () => dispatch(actions.getGames());
+  const onSaveBets = (betsToSave) => dispatch(actions.saveBets(betsToSave));
 
   const games = useSelector(state => {
     return state.games;
@@ -71,7 +72,7 @@ const BetGames = props => {
   const submitHandler = (event) => {
     event.preventDefault();
 
-
+    const betForm = {stateBets}
 
     // const formData = {};
     // for (let formElementIdentifier in authForm) {
@@ -89,7 +90,7 @@ const BetGames = props => {
     // } );
     // setAuthForm(updatedControls);
     
-    // onCheckUsername(results)
+    onSaveBets(stateBets)
   }
 
   let gamesOutput = null;

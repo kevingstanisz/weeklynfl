@@ -99,4 +99,24 @@ public class Bet {
     public Integer getUnderValue() {
         return underValue;
     }
+
+    @Override
+    public String toString() {
+        return "Bet{" +
+                "id=" + id +
+                ", gameId=" + gameId +
+                ", sp1=" + sp1 +
+                ", sp1Value=" + sp1Value +
+                ", sp2=" + sp2 +
+                ", sp2Value=" + sp2Value +
+                ", ml1=" + ml1 +
+                ", ml1Value=" + ml1Value +
+                ", ml2=" + ml2 +
+                ", ml2Value=" + ml2Value +
+                ", over=" + over +
+                ", overValue=" + overValue +
+                ", under=" + under +
+                ", underValue=" + underValue +
+                '}';
+    }
 }

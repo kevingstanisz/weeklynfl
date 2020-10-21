@@ -1,11 +1,12 @@
 package com.kev.weeklynfl.games;
 
+import com.kev.weeklynfl.bets.Bet;
+import com.kev.weeklynfl.bets.BetService;
 import com.kev.weeklynfl.games.showgames.ListGamesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("api/v1/games")
@@ -14,12 +15,14 @@ public class GameLineController {
 
     private final GameService gameService;
     private final ListGamesService listGamesService;
+    private final BetService betService;
 
 
     @Autowired
-    public GameLineController(GameService gameService, ListGamesService listGamesService) {
+    public GameLineController(GameService gameService, ListGamesService listGamesService, BetService betService) {
         this.gameService = gameService;
         this.listGamesService = listGamesService;
+        this.betService = betService;
     }
 
     @PostMapping(path = "savelines")
@@ -29,6 +32,16 @@ public class GameLineController {
 
     @PostMapping(path = "getresults")
     public void saveGameResults(){ gameService.getResults();
+    }
+
+    @PostMapping(path = "savebets")
+    public void saveBets(@RequestBody List<GameLine> gameLines){
+        // System.out.println(bet);
+        for(GameLine gameLine : gameLines){
+            System.out.println(gameLine.getBets().toString());
+        }
+
+        betService.saveBets();
     }
 
     @GetMapping
