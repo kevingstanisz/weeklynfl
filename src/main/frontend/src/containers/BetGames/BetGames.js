@@ -6,8 +6,11 @@ import axios from '../../axios-games';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import Game from '../../components/Game/Game';
+import { updateObject, checkValidity } from '../../shared/utility';
 
 const BetGames = props => {
+  const [stateBets, setBets] = useState([]);
+
   const dispatch = useDispatch();
   const onGetGames = () => dispatch(actions.getGames());
 
@@ -19,16 +22,56 @@ const BetGames = props => {
     onGetGames()
   }, []);
 
-  const inputChangedHandler = ( event, gameId ) => {
-    console.log(gameId)
-    console.log(event.target.checked)
+  useEffect(() => {
+    // console.log('ran here')
+    // console.log(games)
+    setBets(games)
+  }, [games]);
+
+
+
+
+  // setBets(games)
+  // console.log('bets stae')
+    console.log('state result:')
+   console.log(stateBets);
+
+  const inputChangedHandler = ( event, gameId, index ) => {
     console.log(event.target.value)
+
+    let updatedBet = null;
+    if(event.target.id == 'checkbox') {
+        updatedBet =  {
+          ...stateBets[index]['bets'],
+          [event.target.value] : event.target.checked,
+          [event.target.value + 'Value'] : event.target.checked ? stateBets[index]['bets'][event.target.value + 'Value'] : 0
+        };
+    }
+    else {
+      updatedBet =  {
+        ...stateBets[index]['bets'],
+        [event.target.id] : event.target.value
+      };
+    }
+
+    const updatedBetForm = {
+      ...stateBets[index],
+      ['bets']: updatedBet
+    }
+
+    const finalBetForm = {
+      ...stateBets,
+      [index]: updatedBetForm
+    }
+
+    setBets(Object.values(finalBetForm));
+    
   }
 
   const submitHandler = (event) => {
     event.preventDefault();
 
-    console.log('helllooo')
+
 
     // const formData = {};
     // for (let formElementIdentifier in authForm) {
@@ -51,20 +94,26 @@ const BetGames = props => {
 
   let gamesOutput = null;
 
-  let trythis = null;
-  if(games.length != 0) {
-    console.log(games)
-    gamesOutput = games.map(game => {
-      if(game['bets'] != null) {
-        console.log('meettooo')
-        console.log(game)
-      }
+  if(stateBets.length != 0) {
+    console.log('before it fails')
+    console.log(stateBets)
+    gamesOutput = stateBets.map((game, index) => {
       return <Game 
-        key={game['id']} 
+        key={index} 
         gameinfo={game} 
-        checkboxSp1={( event ) => inputChangedHandler( event, game['id'] )}
+        betChange={( event ) => inputChangedHandler( event, game['id'], index )}
         checkedSp1 = {game['bets'] != null ? game['bets']['sp1'] : false}
         valueSp1= {game['bets'] != null ? game['bets']['sp1Value'] : 0}
+        checkedSp2 = {game['bets'] != null ? game['bets']['sp2'] : false}
+        valueSp2= {game['bets'] != null ? game['bets']['sp2Value'] : 0}
+        checkedMl1 = {game['bets'] != null ? game['bets']['ml1'] : false}
+        valueMl1= {game['bets'] != null ? game['bets']['ml1Value'] : 0}
+        checkedMl2 = {game['bets'] != null ? game['bets']['ml2'] : false}
+        valueMl2 = {game['bets'] != null ? game['bets']['ml2Value'] : 0}
+        checkedOver = {game['bets'] != null ? game['bets']['over'] : false}
+        valueOver= {game['bets'] != null ? game['bets']['overValue'] : 0}
+        checkedUnder = {game['bets'] != null ? game['bets']['under'] : false}
+        valueUnder = {game['bets'] != null ? game['bets']['underValue'] : 0}
         >
       </Game>
     })

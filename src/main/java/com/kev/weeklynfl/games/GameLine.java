@@ -47,6 +47,7 @@ public class GameLine {
         this.under = under;
         this.overOdds = overOdds;
         this.underOdds = underOdds;
+        this.bet = new Bet(0, id,false,0,false,0,false,0,false,0,false,0,false,0);
     }
 
     public GameLine(String htmlTeam1, String htmlTeam2, String htmlSp1, String htmlSp2, String htmlSp1Odds, String htmlSp2Odds, String htmlMl1, String htmlMl2, String htmlOver, String htmlUnder, String htmlOverOdds, String htmlUnderOdds) {
