@@ -101,6 +101,62 @@ public class Bet {
         return underValue;
     }
 
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public void setGameId(UUID gameId) {
+        this.gameId = gameId;
+    }
+
+    public void setSp1(boolean sp1) {
+        this.sp1 = sp1;
+    }
+
+    public void setSp1Value(Integer sp1Value) {
+        this.sp1Value = sp1Value;
+    }
+
+    public void setSp2(boolean sp2) {
+        this.sp2 = sp2;
+    }
+
+    public void setSp2Value(Integer sp2Value) {
+        this.sp2Value = sp2Value;
+    }
+
+    public void setMl1(boolean ml1) {
+        this.ml1 = ml1;
+    }
+
+    public void setMl1Value(Integer ml1Value) {
+        this.ml1Value = ml1Value;
+    }
+
+    public void setMl2(boolean ml2) {
+        this.ml2 = ml2;
+    }
+
+    public void setMl2Value(Integer ml2Value) {
+        this.ml2Value = ml2Value;
+    }
+
+    public void setOver(boolean over) {
+        this.over = over;
+    }
+
+    public void setOverValue(Integer overValue) {
+        this.overValue = overValue;
+    }
+
+    public void setUnder(boolean under) {
+        this.under = under;
+    }
+
+    public void setUnderValue(Integer underValue) {
+        this.underValue = underValue;
+    }
+
     @Override
     public String toString() {
         return "Bet{" +

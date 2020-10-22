@@ -10,10 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Repository
@@ -77,12 +74,12 @@ public class ListGamesService {
 
         UUID testUUID = UUID.fromString("62753844-3272-4867-b1b5-ebd19c525a80");
 
-        sql = "SELECT id, gameid, bettype, betvalue FROM bets WHERE week=" + weekNumber.getWeekNumber() + " AND userid='" + testUUID  + "'";
+        sql = "SELECT id, gameid, bettype, betvalue FROM bets WHERE week=" + weekNumber.getWeekNumber() + " AND userid='" + testUUID  + "' ORDER BY gameid ASC";
 
         AtomicReference<Integer> betType = new AtomicReference<>(0);
         AtomicReference<Integer> betValue = new AtomicReference<>(0);
 
-        List<Bet> bets = jdbcTemplate.query(sql, (resultSet, i) -> {
+        List<Bet> rawBets = jdbcTemplate.query(sql, (resultSet, i) -> {
             betType.set(Integer.parseInt(resultSet.getString("bettype")));
             betValue.set(Integer.parseInt(resultSet.getString("betvalue")));
             return new Bet(
@@ -101,6 +98,43 @@ public class ListGamesService {
                     betType.get() == 6,
                     betType.get() == 6 ? betValue.get() : 0);
         });
+
+
+        List<Bet> bets = new ArrayList<Bet>();
+        List<UUID> betGames = new ArrayList<UUID>();
+
+        for(Bet rawBet : rawBets) {
+            if(!betGames.contains(rawBet.getGameId())) {
+                betGames.add(rawBet.getGameId());
+                bets.add(rawBet);
+            }
+            else {
+                if(rawBet.isSp1()) {
+                   bets.get(bets.size() - 1).setSp1(true);
+                   bets.get(bets.size() - 1).setSp1Value(rawBet.getSp1Value());
+                }
+                else if(rawBet.isSp2()) {
+                    bets.get(bets.size() - 1).setSp2(true);
+                    bets.get(bets.size() - 1).setSp2Value(rawBet.getSp2Value());
+                }
+                else if(rawBet.isMl1()) {
+                    bets.get(bets.size() - 1).setMl1(true);
+                    bets.get(bets.size() - 1).setMl1Value(rawBet.getMl1Value());
+                }
+                else if(rawBet.isMl2()) {
+                    bets.get(bets.size() - 1).setMl2(true);
+                    bets.get(bets.size() - 1).setMl2Value(rawBet.getMl2Value());
+                }
+                else if(rawBet.isOver()) {
+                    bets.get(bets.size() - 1).setOver(true);
+                    bets.get(bets.size() - 1).setOverValue(rawBet.getOverValue());
+                }
+                else if(rawBet.isUnder()) {
+                    bets.get(bets.size() - 1).setUnder(true);
+                    bets.get(bets.size() - 1).setUnderValue(rawBet.getUnderValue());
+                }
+            }
+        }
 
         for (Bet bet : bets) {
             gameLines.get(gameIndex.get(bet.getGameId())).setBets(bet);
