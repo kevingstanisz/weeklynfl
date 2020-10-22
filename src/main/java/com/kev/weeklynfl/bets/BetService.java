@@ -10,10 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Repository
@@ -24,8 +21,45 @@ public class BetService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public void saveBets() {
-        System.out.println("hello");
-        return;
+    public void saveBets(List<GameLine> gameLines) {
+        WeekNumber weekNumber = new WeekNumber();
+        UUID testUUID = UUID.fromString("62753844-3272-4867-b1b5-ebd19c525a80");
+
+        String sql =  "DELETE FROM bets WHERE week=" + weekNumber.getWeekNumber() + " AND userid='" + testUUID  + "'";
+        jdbcTemplate.execute(sql);
+
+        Map<Integer, Integer> betAndValues = new HashMap<Integer, Integer>();
+
+        for (GameLine gameLine : gameLines) {
+            Bet gameBet = gameLine.getBets();
+
+            if(gameBet.isSp1()) {
+                betAndValues.put(1, gameBet.getSp1Value());
+            }
+            if(gameBet.isSp2()) {
+                betAndValues.put(2, gameBet.getSp2Value());
+            }
+            if(gameBet.isMl1()) {
+                betAndValues.put(3, gameBet.getMl1Value());
+            }
+            if(gameBet.isMl2()) {
+                betAndValues.put(4, gameBet.getMl2Value());
+            }
+            if(gameBet.isOver()) {
+                betAndValues.put(5, gameBet.getOverValue());
+            }
+            if(gameBet.isUnder()) {
+                betAndValues.put(6, gameBet.getUnderValue());
+            }
+
+            for(Map.Entry<Integer, Integer> entry : betAndValues.entrySet()) {
+                sql = "INSERT INTO bets (userid, gameid, bettype, betvalue, betresult, totalwon, id, week) " +
+                        "VALUES ('" + testUUID + "', '" + gameLine.getId() + "', " + entry.getKey() + ", " + entry.getValue() + ", " + -1 + ", " + -1 + ", '" + UUID.randomUUID() + "', " + weekNumber.getWeekNumber() + ")";
+
+                jdbcTemplate.execute(sql);
+            }
+
+            betAndValues.clear();
+        }
     }
 }

@@ -36,12 +36,7 @@ public class GameLineController {
 
     @PostMapping(path = "savebets")
     public void saveBets(@RequestBody List<GameLine> gameLines){
-        // System.out.println(bet);
-        for(GameLine gameLine : gameLines){
-            System.out.println(gameLine.getBets().toString());
-        }
-
-        betService.saveBets();
+        betService.saveBets(gameLines);
     }
 
     @GetMapping

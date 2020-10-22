@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.HashMap;
 import java.util.UUID;
 
 @Entity
@@ -11,7 +12,7 @@ import java.util.UUID;
 public class Bet {
 
     @Id
-    private Integer id;
+    private UUID id;
 
     private UUID gameId;
     private boolean sp1;
@@ -27,7 +28,7 @@ public class Bet {
     private boolean under;
     private Integer underValue;
 
-    public Bet(Integer id, UUID gameId, boolean sp1, Integer sp1Value, boolean sp2, Integer sp2Value, boolean ml1, Integer ml1Value, boolean ml2, Integer ml2Value, boolean over, Integer overValue, boolean under, Integer underValue) {
+    public Bet(UUID id, UUID gameId, boolean sp1, Integer sp1Value, boolean sp2, Integer sp2Value, boolean ml1, Integer ml1Value, boolean ml2, Integer ml2Value, boolean over, Integer overValue, boolean under, Integer underValue) {
         this.id = id;
         this.gameId = gameId;
         this.sp1 = sp1;
@@ -44,7 +45,7 @@ public class Bet {
         this.underValue = underValue;
     }
 
-    public Integer getId() {
+    public UUID getId() {
         return id;
     }
 

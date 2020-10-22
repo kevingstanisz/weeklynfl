@@ -86,7 +86,7 @@ public class ListGamesService {
             betType.set(Integer.parseInt(resultSet.getString("bettype")));
             betValue.set(Integer.parseInt(resultSet.getString("betvalue")));
             return new Bet(
-                    Integer.parseInt(resultSet.getString("id")),
+                    UUID.fromString(resultSet.getString("id")),
                     UUID.fromString(resultSet.getString("gameid")),
                     betType.get() == 1,
                     betType.get() == 1 ? betValue.get() : 0,

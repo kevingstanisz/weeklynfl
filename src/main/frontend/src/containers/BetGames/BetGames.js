@@ -6,10 +6,18 @@ import axios from '../../axios-games';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import Game from '../../components/Game/Game';
+import BetRequirements from '../../components/Bet/BetRequirements/BetRequirements'
 import { updateObject, checkValidity } from '../../shared/utility';
+import game from '../../components/Game/Game';
 
 const BetGames = props => {
   const [stateBets, setBets] = useState([]);
+
+  const [betRequirements, setBetRequirements] = useState({
+    numberBets: false,
+    betTotal: false, 
+    minimumBet: false
+  })
 
   const dispatch = useDispatch();
   const onGetGames = () => dispatch(actions.getGames());
@@ -64,6 +72,53 @@ const BetGames = props => {
       ...stateBets,
       [index]: updatedBetForm
     }
+
+    let game = null;
+    let bets = null;
+    let betTotal = 0;
+    let minimumBet = 100;
+    let numberOfBets = 0;
+
+    for(game of Object.values(finalBetForm)){
+      bets = game['bets']
+
+      if(bets.ml1) {
+        betTotal += parseInt(bets.ml1Value);
+        minimumBet = minimumBet < bets.ml1Value ? minimumBet : bets.ml1Value;
+        numberOfBets++;
+      }
+      if(bets.ml2) {
+        betTotal += parseInt(bets.ml2Value);
+        minimumBet = minimumBet < bets.ml2Value ? minimumBet : bets.ml2Value;
+        numberOfBets++;
+      }
+      if(bets.sp1) {
+        betTotal += parseInt(bets.sp1Value);
+        minimumBet = minimumBet < bets.sp1Value ? minimumBet : bets.sp1Value;
+        numberOfBets++;
+      }
+      if(bets.sp2) {
+        betTotal += parseInt(bets.sp2Value);
+        minimumBet = minimumBet < bets.sp2Value ? minimumBet : bets.sp2Value;
+        numberOfBets++;
+      }
+      if(bets.over) {
+        betTotal += parseInt(bets.overValue);
+        minimumBet = minimumBet < bets.overValue ? minimumBet : bets.overValue;
+        numberOfBets++;
+      }
+      if(bets.under) {
+        betTotal += parseInt(bets.underValue);
+        minimumBet = minimumBet < bets.underValue ? minimumBet : bets.underValue;
+        numberOfBets++;
+      }
+    }
+
+    setBetRequirements({
+      numberBets: numberOfBets > 2 ? true : false,
+      betTotal: betTotal == 100 ? true : false, 
+      minimumBet: minimumBet >= 20 ? true : false
+    })
 
     setBets(Object.values(finalBetForm));
     
@@ -123,6 +178,9 @@ const BetGames = props => {
   return (
     <React.Fragment>
       <h1>hello!!</h1>
+      <BetRequirements satisfied = {betRequirements.numberBets}>Minimum 3 Bets</BetRequirements>
+      <BetRequirements satisfied = {betRequirements.minimumBet}>Minimum 20 per Bet</BetRequirements>
+      <BetRequirements satisfied = {betRequirements.betTotal}>Bets total to 100</BetRequirements>
       <form onSubmit={submitHandler}>
       <table>
         <tbody>
