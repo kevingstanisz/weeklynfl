@@ -8,6 +8,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -61,5 +67,39 @@ public class BetService {
 
             betAndValues.clear();
         }
+    }
+
+    public void gradeBets() {
+        WeekNumber weekNumber = new WeekNumber();
+        String sql = "SELECT id, gameid, bettype, betvalue FROM bets WHERE week=" + weekNumber.getWeekNumber() + " AND betresult=" + -1  + " ORDER BY gameid ASC";
+
+        AtomicReference<Integer> betType = new AtomicReference<>(0);
+        AtomicReference<Integer> betValue = new AtomicReference<>(0);
+
+        List<Bet> rawBets = jdbcTemplate.query(sql, (resultSet, i) -> {
+            betType.set(Integer.parseInt(resultSet.getString("bettype")));
+            betValue.set(Integer.parseInt(resultSet.getString("betvalue")));
+            return new Bet(
+                    UUID.fromString(resultSet.getString("id")),
+                    UUID.fromString(resultSet.getString("gameid")),
+                    betType.get() == 1,
+                    betType.get() == 1 ? betValue.get() : 0,
+                    betType.get() == 2,
+                    betType.get() == 2 ? betValue.get() : 0,
+                    betType.get() == 3,
+                    betType.get() == 3 ? betValue.get() : 0,
+                    betType.get() == 4,
+                    betType.get() == 4 ? betValue.get() : 0,
+                    betType.get() == 5,
+                    betType.get() == 5 ? betValue.get() : 0,
+                    betType.get() == 6,
+                    betType.get() == 6 ? betValue.get() : 0);
+        });
+
+        for(Bet rawBet : rawBets) {
+            System.out.println(rawBet.toString());
+        }
+
+
     }
 }

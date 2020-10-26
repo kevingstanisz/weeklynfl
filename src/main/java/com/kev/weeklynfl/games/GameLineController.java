@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/games")
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin("http://localhost:5555")
 public class GameLineController {
 
     private final GameService gameService;
@@ -32,6 +32,11 @@ public class GameLineController {
 
     @PostMapping(path = "getresults")
     public void saveGameResults(){ gameService.getResults();
+    }
+
+    @PostMapping(path = "gradebets")
+    public void gradeBets(){
+        betService.gradeBets();
     }
 
     @PostMapping(path = "savebets")

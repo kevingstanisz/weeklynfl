@@ -30,6 +30,8 @@ public class GameLine {
     private double under;
     private Integer overOdds;
     private Integer underOdds;
+    private Integer result1;
+    private Integer result2;
 
     @OneToOne
     private Bet bet;
@@ -73,6 +75,18 @@ public class GameLine {
         this.underOdds = Integer.parseInt(htmlUnderOdds.replace(" ", IntegerMAX_VALUE));
     }
 
+    public GameLine(UUID id, Integer result1, Integer result2) {
+        this.result1 = result1;
+        this.result2 = result2;
+    }
+
+    public Integer getResult1() {
+        return result1;
+    }
+
+    public Integer getResult2() {
+        return result2;
+    }
 
     public Bet getBets() {
         return bet;

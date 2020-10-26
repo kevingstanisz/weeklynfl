@@ -1,5 +1,6 @@
 package com.kev.weeklynfl.games;
 
+import com.kev.weeklynfl.bets.Bet;
 import com.kev.weeklynfl.games.lines.ScrapeBetOnline;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -8,6 +9,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Service;
 
+import org.json.*;
+
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -15,6 +19,7 @@ import java.net.http.HttpResponse;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class GameService {
@@ -78,13 +83,34 @@ public class GameService {
     }
 
     public void getResults() {
+        WeekNumber weekNumber = new WeekNumber();
+
+        String sql = "SELECT id FROM games WHERE week=" + weekNumber.getWeekNumber();
+
+        Map<UUID, Integer> gameIndex = new HashMap<UUID, Integer>();
+        List<GameLine> gameLines = jdbcTemplate.query(sql, (resultSet, i) -> {
+            gameIndex.put(UUID.fromString(resultSet.getString("id")), i);
+            return new GameLine(
+                    UUID.fromString(resultSet.getString("id")),
+                    null,
+                    null);
+        });
+
         HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://api.sportradar.us/nfl/official/trial/v6/en/games/2020/REG/4/schedule.json?api_key=APIKEY")).build();
-        client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
-                .thenApply(HttpResponse::body)
-                .thenAccept(System.out::println)
-                .join();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://api.sportradar.us/nfl/official/trial/v6/en/games/2020/REG/1/schedule.json?api_key=++++++++++++++"))
+                .build();
+
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request,
+                    HttpResponse.BodyHandlers.ofString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(response.body());
     }
-
-
 }
