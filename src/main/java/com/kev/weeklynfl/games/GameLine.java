@@ -76,7 +76,16 @@ public class GameLine {
     }
 
     public GameLine(UUID id, Integer result1, Integer result2) {
+        this.id = id;
         this.result1 = result1;
+        this.result2 = result2;
+    }
+
+    public void setResult1(Integer result1) {
+        this.result1 = result1;
+    }
+
+    public void setResult2(Integer result2) {
         this.result2 = result2;
     }
 
@@ -152,6 +161,7 @@ public class GameLine {
         return underOdds;
     }
 
+
     @Override
     public String toString() {
         return "GameLine{" +
@@ -168,6 +178,8 @@ public class GameLine {
                 ", under=" + under +
                 ", overOdds=" + overOdds +
                 ", underOdds=" + underOdds +
+                ", result1=" + result1 +
+                ", result2=" + result2 +
                 ", bet=" + bet +
                 '}';
     }

@@ -31,7 +31,12 @@ public class GameLineController {
     }
 
     @PostMapping(path = "getresults")
-    public void saveGameResults(){ gameService.getResults();
+    public void saveGameResults(){
+        try {
+            gameService.getResults();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @PostMapping(path = "gradebets")

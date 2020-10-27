@@ -9,7 +9,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Service;
 
-import org.json.*;
+import java.io.FileReader;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.*;
 
 import java.io.IOException;
 import java.net.URI;
@@ -82,7 +85,7 @@ public class GameService {
         return teamUUID;
     }
 
-    public void getResults() {
+    public void getResults() throws Exception {
         WeekNumber weekNumber = new WeekNumber();
 
         String sql = "SELECT id FROM games WHERE week=" + weekNumber.getWeekNumber();
@@ -98,19 +101,33 @@ public class GameService {
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://api.sportradar.us/nfl/official/trial/v6/en/games/2020/REG/1/schedule.json?api_key=++++++++++++++"))
+                .uri(URI.create("http://api.sportradar.us/nfl/official/trial/v6/en/games/2020/REG/" + weekNumber.getWeekNumber() + "/schedule.json?api_key=9pgtwyez27zssnpce7vv7967"))
                 .build();
 
-        HttpResponse<String> response = null;
-        try {
-            response = client.send(request,
-                    HttpResponse.BodyHandlers.ofString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        System.out.println(response.body());
+        Object obj = new JSONParser().parse(response.body());
+        JSONObject jsonObject = (JSONObject) obj;
+        JSONObject weekObject = (JSONObject) jsonObject.get("week");
+        JSONArray gameArray = (JSONArray) weekObject.get("games");
+
+        for (int i = 0, size = gameArray.size(); i < size; i++)
+        {
+            JSONObject game = (JSONObject) gameArray.get(i);
+
+            if(game.get("status").toString().equals("closed")) {
+
+                UUID id = UUID.fromString((String) game.get("id"));
+
+                JSONObject scores = (JSONObject) game.get("scoring");
+                Integer resultHome = Integer.parseInt(scores.get("home_points").toString());
+                Integer resultAway = Integer.parseInt(scores.get("away_points").toString());
+
+                if (gameIndex.get(id) != null) {
+                    String sqlUpdate = "UPDATE games SET homeresult = " + resultHome + " , awayresult = " + resultAway + " WHERE id='" + id + "'";
+                    jdbcTemplate.execute(sqlUpdate);
+                }
+            }
+        }
     }
 }
