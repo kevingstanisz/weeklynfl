@@ -71,35 +71,33 @@ public class BetService {
 
     public void gradeBets() {
         WeekNumber weekNumber = new WeekNumber();
-        String sql = "SELECT id, gameid, bettype, betvalue FROM bets WHERE week=" + weekNumber.getWeekNumber() + " AND betresult=" + -1  + " ORDER BY gameid ASC";
+        String sql = "SELECT id, gameid, bettype, betvalue FROM bets WHERE week=" + 7 + " AND betresult=" + -1  + " ORDER BY gameid ASC";
 
-        AtomicReference<Integer> betType = new AtomicReference<>(0);
-        AtomicReference<Integer> betValue = new AtomicReference<>(0);
-
+        Map<UUID, Integer> gameIndex = new HashMap<UUID, Integer>();
         List<Bet> rawBets = jdbcTemplate.query(sql, (resultSet, i) -> {
-            betType.set(Integer.parseInt(resultSet.getString("bettype")));
-            betValue.set(Integer.parseInt(resultSet.getString("betvalue")));
+            gameIndex.put(UUID.fromString(resultSet.getString("gameid")), i);
             return new Bet(
                     UUID.fromString(resultSet.getString("id")),
                     UUID.fromString(resultSet.getString("gameid")),
-                    betType.get() == 1,
-                    betType.get() == 1 ? betValue.get() : 0,
-                    betType.get() == 2,
-                    betType.get() == 2 ? betValue.get() : 0,
-                    betType.get() == 3,
-                    betType.get() == 3 ? betValue.get() : 0,
-                    betType.get() == 4,
-                    betType.get() == 4 ? betValue.get() : 0,
-                    betType.get() == 5,
-                    betType.get() == 5 ? betValue.get() : 0,
-                    betType.get() == 6,
-                    betType.get() == 6 ? betValue.get() : 0);
+                    Integer.parseInt(resultSet.getString("betvalue")),
+                    Integer.parseInt(resultSet.getString("bettype")));
         });
 
-        for(Bet rawBet : rawBets) {
-            System.out.println(rawBet.toString());
-        }
+        sql = "SELECT id, homeresult, awayresult FROM games WHERE week=" + 7 + " AND homeresult IS NOT NULL";
 
+        List<GameLine> gameScores = jdbcTemplate.query(sql, (resultSet, i) -> {
+            return new GameLine(
+                    UUID.fromString(resultSet.getString("id")),
+                    Integer.parseInt(resultSet.getString("homeresult")),
+                    Integer.parseInt(resultSet.getString("awayresult")));
+
+        });
+
+        for(GameLine gameScore : gameScores) {
+            if(gameIndex.containsKey(gameScore.getId())) {
+                System.out.println("grade the bet");
+            }
+        }
 
     }
 }

@@ -28,6 +28,9 @@ public class Bet {
     private boolean under;
     private Integer underValue;
 
+    private Integer betValue;
+    private Integer betType;
+
     public Bet(UUID id, UUID gameId, boolean sp1, Integer sp1Value, boolean sp2, Integer sp2Value, boolean ml1, Integer ml1Value, boolean ml2, Integer ml2Value, boolean over, Integer overValue, boolean under, Integer underValue) {
         this.id = id;
         this.gameId = gameId;
@@ -43,6 +46,21 @@ public class Bet {
         this.overValue = overValue;
         this.under = under;
         this.underValue = underValue;
+    }
+
+    public Bet(UUID id, UUID gameId, Integer betValue, Integer betType) {
+        this.id = id;
+        this.gameId = gameId;
+        this.betValue = betValue;
+        this.betType = betType;
+    }
+
+    public Integer getBetValue() {
+        return betValue;
+    }
+
+    public Integer getBetType() {
+        return betType;
     }
 
     public UUID getId() {
