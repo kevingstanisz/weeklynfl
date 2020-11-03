@@ -58,6 +58,22 @@ public class GameLine {
         this.bet = new Bet(null, id,false,0,false,0,false,0,false,0,false,0,false,0);
     }
 
+    public GameLine(UUID id, double sp1, double sp2, Integer sp1Odds, Integer sp2Odds, Integer ml1, Integer ml2, double over, double under, Integer overOdds, Integer underOdds, Integer result1, Integer result2) {
+        this.id = id;
+        this.sp1 = sp1;
+        this.sp2 = sp2;
+        this.sp1Odds = sp1Odds;
+        this.sp2Odds = sp2Odds;
+        this.ml1 = ml1;
+        this.ml2 = ml2;
+        this.over = over;
+        this.under = under;
+        this.overOdds = overOdds;
+        this.underOdds = underOdds;
+        this.result1 = result1;
+        this.result2 = result2;
+    }
+
     public GameLine(String htmlTeam1, String htmlTeam2, String htmlSp1, String htmlSp2, String htmlSp1Odds, String htmlSp2Odds, String htmlMl1, String htmlMl2, String htmlOver, String htmlUnder, String htmlOverOdds, String htmlUnderOdds) {
         String IntegerMAX_VALUE = "32767";
 

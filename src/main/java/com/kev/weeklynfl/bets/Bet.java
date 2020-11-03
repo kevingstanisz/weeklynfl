@@ -1,5 +1,6 @@
 package com.kev.weeklynfl.bets;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.Entity;
@@ -30,6 +31,11 @@ public class Bet {
 
     private Integer betValue;
     private Integer betType;
+
+    @JsonCreator
+    public Bet(){
+
+    }
 
     public Bet(UUID id, UUID gameId, boolean sp1, Integer sp1Value, boolean sp2, Integer sp2Value, boolean ml1, Integer ml1Value, boolean ml2, Integer ml2Value, boolean over, Integer overValue, boolean under, Integer underValue) {
         this.id = id;
