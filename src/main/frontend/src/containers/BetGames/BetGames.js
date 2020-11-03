@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import * as actions from '../../store/actions/index';
+import classes from './BetGames.module.css';
 
 import axios from '../../axios-games';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
@@ -126,25 +127,7 @@ const BetGames = props => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-
     const betForm = {stateBets}
-
-    // const formData = {};
-    // for (let formElementIdentifier in authForm) {
-    //     formData[formElementIdentifier] = authForm[formElementIdentifier].value;
-    // }
-    // const results = {
-    //     score: finalScore,
-    //     name: formData.name
-    // }
-
-    // const updatedControls = updateObject( authForm, {
-    //     ['name']: updateObject( authForm['name'], {
-    //         lockButton: true
-    //     } )
-    // } );
-    // setAuthForm(updatedControls);
-    
     onSaveBets(stateBets)
   }
 
@@ -193,7 +176,7 @@ const BetGames = props => {
         </tbody>
       {gamesOutput}
       </table>
-      <input type="submit" value="Submit"></input>
+      <input type="submit" value="Submit"  disabled = {!(betRequirements.betTotal && betRequirements.minimumBet && betRequirements.numberBets)}></input>
       </form>
     </React.Fragment>
   );

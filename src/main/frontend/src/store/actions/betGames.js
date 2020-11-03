@@ -26,11 +26,6 @@ export const saveBets = (betsToSave) => {
         console.log(betsToSave);
 
         let url = '/games/savebets';
-        const authData = {
-            // email: email,
-            // password: password,
-            // returnSecureToken: true
-        };
 
         console.log('in action')
         console.log(betsToSave)
@@ -38,16 +33,10 @@ export const saveBets = (betsToSave) => {
         axios.post(url, betsToSave)
         .then(response => {
             console.log(response)
-            // const expirationDate = new Date(new Date().getTime() + response.data.expiresIn * 1000);
-            // localStorage.setItem('token', response.data.idToken);
-            // localStorage.setItem('expirationDate', expirationDate);
-            // localStorage.setItem('userId', response.data.localId);
-            // dispatch(authSuccess(response.data.idToken, response.data.localId));
             dispatch(getGames());
         })
         .catch(err => {
-            console.log('hi')
-            //dispatch(authFail(err.response.data.error));
+            console.log('error')
         });
     }
 }
