@@ -10,9 +10,11 @@ import Game from '../../components/Game/Game';
 import BetRequirements from '../../components/Bet/BetRequirements/BetRequirements'
 import { updateObject, checkValidity } from '../../shared/utility';
 import game from '../../components/Game/Game';
+import { fetchGamesSuccess } from '../../store/actions/betGames';
 
 const BetGames = props => {
   const [stateBets, setBets] = useState([]);
+  const [initialLoad, setinitialLoad] = useState([]);
 
   const [betRequirements, setBetRequirements] = useState({
     numberBets: false,
@@ -33,9 +35,19 @@ const BetGames = props => {
   }, []);
 
   useEffect(() => {
-    // console.log('ran here')
-    // console.log(games)
     setBets(games)
+
+    let alreadyCompleted = false;
+    for(let i = 0; i < games.length; i++){
+      if((games[i]['bets']['sp1Value'] > 0) || (games[i]['bets']['sp2Value'] > 0) || 
+      (games[i]['bets']['ml1Value'] > 0) || (games[i]['bets']['ml2Value'] > 0) || 
+      (games[i]['bets']['overValue'] > 0) || (games[i]['bets']['underValue'] > 0)) {
+        alreadyCompleted = true; 
+        break;
+      }
+    }
+
+    setinitialLoad(alreadyCompleted)
   }, [games]);
 
 
@@ -47,6 +59,7 @@ const BetGames = props => {
    console.log(stateBets);
 
   const inputChangedHandler = ( event, gameId, index ) => {
+    setinitialLoad(false)
     console.log(event.target.value)
 
     let updatedBet = null;
@@ -134,8 +147,6 @@ const BetGames = props => {
   let gamesOutput = null;
 
   if(stateBets.length != 0) {
-    console.log('before it fails')
-    console.log(stateBets)
     gamesOutput = stateBets.map((game, index) => {
       return <Game 
         key={index} 
@@ -160,10 +171,9 @@ const BetGames = props => {
 
   return (
     <React.Fragment>
-      <h1>hello!!</h1>
-      <BetRequirements satisfied = {betRequirements.numberBets}>Minimum 3 Bets</BetRequirements>
-      <BetRequirements satisfied = {betRequirements.minimumBet}>Minimum 20 per Bet</BetRequirements>
-      <BetRequirements satisfied = {betRequirements.betTotal}>Bets total to 100</BetRequirements>
+      <BetRequirements satisfied = {betRequirements.numberBets || initialLoad}>Minimum 3 Bets</BetRequirements>
+      <BetRequirements satisfied = {betRequirements.minimumBet || initialLoad}>Minimum 20 per Bet</BetRequirements>
+      <BetRequirements satisfied = {betRequirements.betTotal || initialLoad}>Bets total to 100</BetRequirements>
       <form onSubmit={submitHandler}>
       <table>
         <tbody>

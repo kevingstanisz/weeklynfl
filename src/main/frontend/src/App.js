@@ -8,8 +8,6 @@ import Layout from './hoc/Layout/Layout';
 import BetGames from './containers/BetGames/BetGames';
 
 function App() {
-  console.log('hi')
-
   return (
     <div>
       <Layout>

@@ -20,8 +20,6 @@ class Layout extends Component {
     }
 
     render () {
-        console.log('hi')
-
         return (
             <React.Fragment>
                 {/* <Toolbar drawerToggleClicked={this.sideDrawerToggleHandler} />
