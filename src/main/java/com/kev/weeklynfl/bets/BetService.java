@@ -87,7 +87,7 @@ public class BetService {
                     Integer.parseInt(resultSet.getString("bettype")));
         });
 
-        sql = "SELECT * FROM games WHERE week=" + 7 + " AND homeresult IS NOT NULL";
+        sql = "SELECT * FROM games WHERE week=" + weekNumber.getWeekNumber() + " AND homeresult IS NOT NULL";
 
         List<GameLine> gameScores = jdbcTemplate.query(sql, (resultSet, i) -> {
             return new GameLine(

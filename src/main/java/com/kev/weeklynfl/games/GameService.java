@@ -46,7 +46,7 @@ public class GameService {
         // List<GameLine> identifiedGames = new ArrayList<GameLine>();
 
         for (GameLine gameLine : gameLines) {
-            String sql = "SELECT id, home, away FROM games WHERE (home='" + teamUUID.get(gameLine.getTeam1()) + "' OR home='" + teamUUID.get(gameLine.getTeam2()) + "') AND week = " + weekNumber.getWeekNumber();
+            String sql = "SELECT id, home, away FROM games WHERE ((away='" + teamUUID.get(gameLine.getTeam1()) + "' AND home='" + teamUUID.get(gameLine.getTeam2()) + "') OR (home='" + teamUUID.get(gameLine.getTeam1()) + "' AND away='" + teamUUID.get(gameLine.getTeam2()) + "')) AND week = " + weekNumber.getWeekNumber();
 
             List<UUID> gameId = jdbcTemplate.query(sql, (resultSet, i) -> {
                 return UUID.fromString(resultSet.getString("id"));
