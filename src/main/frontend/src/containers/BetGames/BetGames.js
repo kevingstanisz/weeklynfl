@@ -27,7 +27,7 @@ const BetGames = props => {
   const onSaveBets = (betsToSave) => dispatch(actions.saveBets(betsToSave));
 
   const games = useSelector(state => {
-    return state.games;
+    return state.betReducer.games;
   }); 
 
   useEffect(() => {
