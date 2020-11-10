@@ -1,0 +1,4 @@
+CREATE TABLE roles (
+    id int NOT NULL PRIMARY KEY,
+    name CHARACTER VARYING(20) NOT NULL
+);

@@ -8,17 +8,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
-import com.bezkoder.springjwt.security.services.UserDetailsImpl;
+import com.kev.weeklynfl.auth.security.services.UserDetailsImpl;
 import io.jsonwebtoken.*;
 
 @Component
 public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
-    @Value("${bezkoder.app.jwtSecret}")
+    @Value("kevSecretKey")
     private String jwtSecret;
 
-    @Value("${bezkoder.app.jwtExpirationMs}")
+    @Value("86400000")
     private int jwtExpirationMs;
 
     public String generateJwtToken(Authentication authentication) {
