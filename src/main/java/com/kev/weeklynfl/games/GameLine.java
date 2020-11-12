@@ -77,6 +77,14 @@ public class GameLine {
     public GameLine(String htmlTeam1, String htmlTeam2, String htmlSp1, String htmlSp2, String htmlSp1Odds, String htmlSp2Odds, String htmlMl1, String htmlMl2, String htmlOver, String htmlUnder, String htmlOverOdds, String htmlUnderOdds) {
         String IntegerMAX_VALUE = "32767";
 
+        if(htmlTeam1.equals("Washington Redskins")) {
+            htmlTeam1 = "Washington Football Team";
+        }
+
+        if(htmlTeam2.equals("Washington Redskins")) {
+            htmlTeam2 = "Washington Football Team";
+        }
+
         this.team1 = htmlTeam1;
         this.team2 = htmlTeam2;
         this.sp1 = Double.parseDouble(htmlSp1.replace("½", ".5").replace("pk", "0"));

@@ -42,7 +42,9 @@ public class ScrapeBetOnline {
             else {
                 for(HtmlElement htmlElement : htmlElements) {
                     HtmlElement tdTeam1 = htmlElement.getFirstByXPath("tr[@class='h2hSeq firstline']/td[@class='col_teamname bdevtt']");
+                    // System.out.println(tdTeam1);
                     HtmlElement tdTeam2 = htmlElement.getFirstByXPath("tr[@class='otherline']/td[@class='col_teamname bdevtt']");
+                    // System.out.println(tdTeam2);
                     HtmlElement tdSp1 = htmlElement.getFirstByXPath("tr[@class='h2hSeq firstline']/td[@class='hdcp bdevtt ']");
                     HtmlElement tdSp2 = htmlElement.getFirstByXPath("tr[@class='otherline']/td[@class='hdcp bdevtt ']");
                     HtmlElement tdSp1Odds = htmlElement.getFirstByXPath("tr[@class='h2hSeq firstline']/td[@class='odds bdevtt displayOdds']");
