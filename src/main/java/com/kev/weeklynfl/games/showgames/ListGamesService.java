@@ -1,5 +1,6 @@
 package com.kev.weeklynfl.games.showgames;
 
+import com.kev.weeklynfl.auth.security.jwt.JwtUtils;
 import com.kev.weeklynfl.bets.Bet;
 import com.kev.weeklynfl.games.GameLine;
 import com.kev.weeklynfl.games.WeekNumber;
@@ -14,7 +15,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Repository
-public class ListGamesService {
+public class ListGamesService extends JwtUtils {
     private final JdbcTemplate jdbcTemplate;
 
     public ListGamesService(JdbcTemplate jdbcTemplate) {
@@ -47,7 +48,7 @@ public class ListGamesService {
         return gameLines;
     }
 
-    public List<GameLine> selectWeeklyBetGames(int id) {
+    public List<GameLine> selectWeeklyBetGames(int id, String authToken) {
         WeekNumber weekNumber = new WeekNumber();
         String sql = "SELECT * FROM games WHERE week=" + weekNumber.getWeekNumber() + " ORDER BY scheduled";
 
@@ -72,9 +73,14 @@ public class ListGamesService {
                     resultSet.getString("underodds") == null ? Integer.MAX_VALUE : Integer.parseInt(resultSet.getString("underodds")));
         });
 
-        UUID testUUID = UUID.fromString("62753844-3272-4867-b1b5-ebd19c525a80");
+        String username = getUserNameFromJwtToken(authToken.substring(7));
+        sql = "SELECT id FROM users WHERE username=?";
 
-        sql = "SELECT id, gameid, bettype, betvalue FROM bets WHERE week=" + weekNumber.getWeekNumber() + " AND userid='" + testUUID  + "' ORDER BY gameid ASC";
+        Integer userId = (Integer) jdbcTemplate.queryForObject(
+                sql, new Object[] { username }, Integer.class);
+
+
+        sql = "SELECT id, gameid, bettype, betvalue FROM bets WHERE week=" + weekNumber.getWeekNumber() + " AND userid=" + userId  + " ORDER BY gameid ASC";
 
         AtomicReference<Integer> betType = new AtomicReference<>(0);
         AtomicReference<Integer> betValue = new AtomicReference<>(0);

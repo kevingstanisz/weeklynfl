@@ -45,8 +45,8 @@ public class GameLineController {
     }
 
     @PostMapping(path = "savebets")
-    public void saveBets(@RequestBody List<GameLine> gameLines){
-        betService.saveBets(gameLines);
+    public void saveBets(@RequestBody List<GameLine> gameLines,  @RequestHeader("Authorization") String authToken){
+        betService.saveBets(gameLines, authToken);
     }
 
     @GetMapping
@@ -55,8 +55,8 @@ public class GameLineController {
     }
 
     @GetMapping(path = "{id}")
-    public List<GameLine> selectWeeklyBetGames(@PathVariable("id") int id){
-        return listGamesService.selectWeeklyBetGames(id);
+    public List<GameLine> selectWeeklyBetGames(@PathVariable("id") int id, @RequestHeader("Authorization") String authToken){
+        return listGamesService.selectWeeklyBetGames(id, authToken);
     }
 
 //    @PutMapping

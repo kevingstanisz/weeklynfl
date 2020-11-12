@@ -1,5 +1,6 @@
 package com.kev.weeklynfl.bets;
 
+import com.kev.weeklynfl.auth.security.jwt.JwtUtils;
 import com.kev.weeklynfl.bets.Bet;
 import com.kev.weeklynfl.games.GameLine;
 import com.kev.weeklynfl.games.WeekNumber;
@@ -20,7 +21,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Repository
-public class BetService {
+public class BetService extends JwtUtils {
     private final JdbcTemplate jdbcTemplate;
 
     static final int WIN = 1;
@@ -31,45 +32,53 @@ public class BetService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public void saveBets(List<GameLine> gameLines) {
+    public void saveBets(List<GameLine> gameLines, String authToken) {
         WeekNumber weekNumber = new WeekNumber();
-        UUID testUUID = UUID.fromString("62753844-3272-4867-b1b5-ebd19c525a80");
 
-        String sql =  "DELETE FROM bets WHERE week=" + weekNumber.getWeekNumber() + " AND userid='" + testUUID  + "'";
-        jdbcTemplate.execute(sql);
+        String username = getUserNameFromJwtToken(authToken.substring(7));
+        String sql = "SELECT id FROM users WHERE username=?";
 
-        Map<Integer, Integer> betAndValues = new HashMap<Integer, Integer>();
+        Integer userId = (Integer) jdbcTemplate.queryForObject(
+                sql, new Object[] { username }, Integer.class);
 
-        for (GameLine gameLine : gameLines) {
-            Bet gameBet = gameLine.getBets();
 
-            if(gameBet.isSp1()) {
-                betAndValues.put(1, gameBet.getSp1Value());
-            }
-            if(gameBet.isSp2()) {
-                betAndValues.put(2, gameBet.getSp2Value());
-            }
-            if(gameBet.isMl1()) {
-                betAndValues.put(3, gameBet.getMl1Value());
-            }
-            if(gameBet.isMl2()) {
-                betAndValues.put(4, gameBet.getMl2Value());
-            }
-            if(gameBet.isOver()) {
-                betAndValues.put(5, gameBet.getOverValue());
-            }
-            if(gameBet.isUnder()) {
-                betAndValues.put(6, gameBet.getUnderValue());
-            }
+        if(userId != null) {
+            sql = "DELETE FROM bets WHERE week=" + weekNumber.getWeekNumber() + " AND userid=" + userId;
+            jdbcTemplate.execute(sql);
 
-            for(Map.Entry<Integer, Integer> entry : betAndValues.entrySet()) {
-                sql = "INSERT INTO bets (userid, gameid, bettype, betvalue, betresult, totalwon, id, week) " +
-                        "VALUES ('" + testUUID + "', '" + gameLine.getId() + "', " + entry.getKey() + ", " + entry.getValue() + ", " + -1 + ", " + -1 + ", '" + UUID.randomUUID() + "', " + weekNumber.getWeekNumber() + ")";
+            Map<Integer, Integer> betAndValues = new HashMap<Integer, Integer>();
 
-                jdbcTemplate.execute(sql);
+            for (GameLine gameLine : gameLines) {
+                Bet gameBet = gameLine.getBets();
+
+                if (gameBet.isSp1()) {
+                    betAndValues.put(1, gameBet.getSp1Value());
+                }
+                if (gameBet.isSp2()) {
+                    betAndValues.put(2, gameBet.getSp2Value());
+                }
+                if (gameBet.isMl1()) {
+                    betAndValues.put(3, gameBet.getMl1Value());
+                }
+                if (gameBet.isMl2()) {
+                    betAndValues.put(4, gameBet.getMl2Value());
+                }
+                if (gameBet.isOver()) {
+                    betAndValues.put(5, gameBet.getOverValue());
+                }
+                if (gameBet.isUnder()) {
+                    betAndValues.put(6, gameBet.getUnderValue());
+                }
+
+                for (Map.Entry<Integer, Integer> entry : betAndValues.entrySet()) {
+                    sql = "INSERT INTO bets (userid, gameid, bettype, betvalue, betresult, totalwon, id, week) " +
+                            "VALUES (" + userId + ", '" + gameLine.getId() + "', " + entry.getKey() + ", " + entry.getValue() + ", " + -1 + ", " + -1 + ", '" + UUID.randomUUID() + "', " + weekNumber.getWeekNumber() + ")";
+
+                    jdbcTemplate.execute(sql);
+                }
+
+                betAndValues.clear();
             }
-
-            betAndValues.clear();
         }
     }
 
