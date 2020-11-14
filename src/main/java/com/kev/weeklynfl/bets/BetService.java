@@ -3,6 +3,8 @@ package com.kev.weeklynfl.bets;
 import com.kev.weeklynfl.auth.security.jwt.JwtUtils;
 import com.kev.weeklynfl.bets.Bet;
 import com.kev.weeklynfl.games.GameLine;
+import com.kev.weeklynfl.games.GameResult;
+import com.kev.weeklynfl.games.Team;
 import com.kev.weeklynfl.games.WeekNumber;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -240,5 +242,67 @@ public class BetService extends JwtUtils {
                 rawBets.remove(currentBet);
             }
         }
+    }
+
+    public List<UserBet> showWeekBets(int week) {
+        WeekNumber weekNumber = new WeekNumber();
+
+        String sql = "SELECT userid, gameId, betValue, betType, betResult, totalWon FROM bets WHERE week =" + weekNumber.getWeekNumber() + " ORDER BY userid";
+
+        List<Bet> allBets = jdbcTemplate.query(sql, (resultSet, i) -> {
+            return new Bet(
+                    Integer.parseInt(resultSet.getString("userid")),
+                    UUID.fromString(resultSet.getString("gameId")),
+                    Integer.parseInt(resultSet.getString("betValue")),
+                    Integer.parseInt(resultSet.getString("betType")),
+                    Integer.parseInt(resultSet.getString("betResult")),
+                    Double.parseDouble(resultSet.getString("totalWon")));
+        });
+
+
+        sql = "SELECT * FROM teams";
+        Map<UUID, Integer> teamIndex = new HashMap<UUID, Integer>();
+        List<Team> teamList = jdbcTemplate.query(sql, (resultSet, i) -> {
+            teamIndex.put(UUID.fromString(resultSet.getString("id")), i);
+            return new Team(
+                    resultSet.getString("name"),
+                    resultSet.getString("abb"));
+        });
+
+        sql = "SELECT id, homeresult, awayresult FROM games WHERE week=" + week;
+        Map<UUID, Integer> gameIndex = new HashMap<UUID, Integer>();
+        List<GameResult> gameList = jdbcTemplate.query(sql, (resultSet, i) -> {
+            gameIndex.put(UUID.fromString(resultSet.getString("id")), i);
+            return new GameResult(
+                    UUID.fromString(resultSet.getString("id")),
+                    Integer.parseInt(resultSet.getString("homeresult")),
+                    Integer.parseInt(resultSet.getString("awayresult")));
+        });
+
+        for (Bet bet : allBets) {
+            bet.setGameResult(gameList.get(gameIndex.get(bet.getGameId())));
+            bet.setTeam1(teamList.get(teamIndex.get(bet.getTeam1())));
+            bet.setTeam2(teamList.get(teamIndex.get(bet.getTeam2())));
+        }
+
+        List<UserBet> userBetList = new ArrayList<UserBet>();
+
+        Set<Integer> users = new HashSet<Integer>();
+        for (Bet bet : allBets) {
+            if(!users.contains(bet.getUserId())) {
+                users.add(bet.getUserId());
+
+                sql = "SELECT username FROM users WHERE id=?";
+
+                String username = (String) jdbcTemplate.queryForObject(
+                sql, new Object[] { bet.getUserId() }, String.class);
+
+                userBetList.add(new UserBet(username, new ArrayList<Bet>()));
+            }
+
+            userBetList.get(userBetList.size() - 1).getBetList().add(bet);
+        }
+
+        return userBetList;
     }
 }

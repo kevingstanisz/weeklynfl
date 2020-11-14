@@ -2,6 +2,7 @@ package com.kev.weeklynfl.games;
 
 import com.kev.weeklynfl.bets.Bet;
 import com.kev.weeklynfl.bets.BetService;
+import com.kev.weeklynfl.bets.UserBet;
 import com.kev.weeklynfl.games.showgames.ListGamesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -58,6 +59,11 @@ public class GameLineController {
     public List<GameLine> selectWeeklyBetGames(@PathVariable("id") int id, @RequestHeader("Authorization") String authToken){
         return listGamesService.selectWeeklyBetGames(id, authToken);
     }
+
+     @GetMapping(path = "bets/week/{week}")
+     public List<UserBet> selectAllWeeklyBetGames(@PathVariable("week") int week){
+         return betService.showWeekBets(week);
+     }
 
 //    @PutMapping
 //    public void saveGameLines() {

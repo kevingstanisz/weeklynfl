@@ -2,9 +2,12 @@ package com.kev.weeklynfl.bets;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.kev.weeklynfl.games.GameResult;
+import com.kev.weeklynfl.games.Team;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -31,6 +34,21 @@ public class Bet {
 
     private Integer betValue;
     private Integer betType;
+
+    private Integer betResult;
+    private double totalWon;
+    private String username;
+    private Integer userId;
+
+    @OneToOne
+    private GameResult gameResult;
+
+    @OneToOne
+    private Team team1;
+
+    @OneToOne
+    private Team team2;
+
 
     @JsonCreator
     public Bet(){
@@ -59,6 +77,79 @@ public class Bet {
         this.gameId = gameId;
         this.betValue = betValue;
         this.betType = betType;
+    }
+
+    public Bet(Integer userID, UUID gameId, Integer betValue, Integer betType, Integer betResult, double totalWon) {
+        this.userId = userID;
+        this.gameId = gameId;
+        this.betValue = betValue;
+        this.betType = betType;
+        this.betResult = betResult;
+        this.totalWon = totalWon;
+    }
+
+    public Team getTeam1() {
+        return team1;
+    }
+
+    public void setTeam1(Team team1) {
+        this.team1 = team1;
+    }
+
+    public Team getTeam2() {
+        return team2;
+    }
+
+    public void setTeam2(Team team2) {
+        this.team2 = team2;
+    }
+
+    public GameResult getGameResult() {
+        return gameResult;
+    }
+
+    public void setGameResult(GameResult gameResult) {
+        this.gameResult = gameResult;
+    }
+
+    public void setBetValue(Integer betValue) {
+        this.betValue = betValue;
+    }
+
+    public void setBetType(Integer betType) {
+        this.betType = betType;
+    }
+
+    public Integer getBetResult() {
+        return betResult;
+    }
+
+    public void setBetResult(Integer betResult) {
+        this.betResult = betResult;
+    }
+
+    public double getTotalWon() {
+        return totalWon;
+    }
+
+    public void setTotalWon(double totalWon) {
+        this.totalWon = totalWon;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public Integer getBetValue() {
