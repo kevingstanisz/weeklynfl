@@ -1,4 +1,7 @@
 export {
     getGames,
-    saveBets
+    saveBets,
+    closeModal,
+    getResults,
+    gradeBets
 } from './betGames'

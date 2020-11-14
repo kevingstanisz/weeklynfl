@@ -10,3 +10,9 @@ export const LOGOUT = "LOGOUT";
 
 export const SET_MESSAGE = "SET_MESSAGE";
 export const CLEAR_MESSAGE = "CLEAR_MESSAGE";
+
+
+export const ADMIN_CALL_SUCCESS = "ADMIN_CALL_SUCCESS";
+export const ADMIN_CALL_FAIL = "ADMIN_CALL_FAIL";
+export const CLOSE_MODAL = "CLOSE_MODAL";
+

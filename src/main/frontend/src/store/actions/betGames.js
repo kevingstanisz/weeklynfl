@@ -9,6 +9,20 @@ export const fetchGamesSuccess = (games) => {
     }
 }
 
+export const adminCallSuccess = (message) => {
+    return{
+        type: actionTypes.ADMIN_CALL_SUCCESS,
+        message: message
+    }
+}
+
+export const adminCallFail = (error) => {
+    return{
+        type: actionTypes.ADMIN_CALL_FAIL,
+        error: error
+    }
+}
+
 export const getGames = () => {
     return dispatch => {
         axios.get('/games/1', { headers: authHeader() })
@@ -39,5 +53,44 @@ export const saveBets = (betsToSave) => {
         .catch(err => {
             console.log('error')
         });
+    }
+}
+
+export const getResults = () => {
+    console.log('get game results')
+    return dispatch => {
+
+        let url = '/games/getresults';
+
+        axios.post(url, '',{ headers: authHeader() })
+        .then(response => {
+            console.log(response)
+            dispatch(adminCallSuccess('game results saved'));
+        })
+        .catch(err => {
+            console.log('error' + err)
+        });
+    }
+}
+
+export const gradeBets = () => {
+    return dispatch => {
+
+        let url = '/games/gradebets';
+
+        axios.post(url, '', { headers: authHeader() })
+        .then(response => {
+            console.log(response)
+            dispatch(adminCallSuccess('bets graded'));
+        })
+        .catch(err => {
+            console.log('error' + err)
+        });
+    }
+}
+
+export const closeModal = () => {
+    return{
+        type: actionTypes.CLOSE_MODAL,
     }
 }

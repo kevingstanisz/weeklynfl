@@ -84,7 +84,7 @@ public class BetService extends JwtUtils {
 
     public void gradeBets() {
         WeekNumber weekNumber = new WeekNumber();
-        String sql = "SELECT id, gameid, bettype, betvalue FROM bets WHERE week=" + 7 + " AND betresult=" + -1  + " ORDER BY gameid ASC";
+        String sql = "SELECT id, gameid, bettype, betvalue FROM bets WHERE week=" + weekNumber.getWeekNumber() + " AND betresult=" + -1  + " ORDER BY gameid ASC";
 
         List<UUID> gameIndex = new ArrayList<>();
         List<Bet> rawBets = jdbcTemplate.query(sql, (resultSet, i) -> {
