@@ -15,6 +15,12 @@ const reducer = ( state = initialState, action ) => {
                 games: action.games
             };
 
+        case actionTypes.FETCH_BETS_SUCCESS:
+            return{
+                ...state,
+                bets: action.bets
+            };
+
         case actionTypes.ADMIN_CALL_SUCCESS:
             return{
                 ...state,

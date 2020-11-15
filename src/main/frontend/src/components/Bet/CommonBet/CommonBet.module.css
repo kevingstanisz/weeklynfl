@@ -1,0 +1,12 @@
+.Pending {
+    color: black;
+}
+
+.Loss {
+    color: red;
+}
+
+.Win {
+    color: green;
+    font-weight: bold;
+}

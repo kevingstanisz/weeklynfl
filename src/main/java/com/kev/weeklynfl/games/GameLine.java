@@ -20,6 +20,10 @@ public class GameLine {
 
     private String team1;
     private String team2;
+
+    private UUID team1UUID;
+    private UUID team2UUID;
+
     private double sp1;
     private double sp2;
     private Integer sp1Odds;
@@ -103,6 +107,40 @@ public class GameLine {
         this.id = id;
         this.result1 = result1;
         this.result2 = result2;
+    }
+
+    public GameLine(UUID id, UUID team1UUID, UUID team2UUID, double sp1, double sp2, Integer sp1Odds, Integer sp2Odds, Integer ml1, Integer ml2, double over, double under, Integer overOdds, Integer underOdds, Integer result1, Integer result2) {
+        this.id = id;
+        this.team1UUID = team1UUID;
+        this.team2UUID = team2UUID;
+        this.sp1 = sp1;
+        this.sp2 = sp2;
+        this.sp1Odds = sp1Odds;
+        this.sp2Odds = sp2Odds;
+        this.ml1 = ml1;
+        this.ml2 = ml2;
+        this.over = over;
+        this.under = under;
+        this.overOdds = overOdds;
+        this.underOdds = underOdds;
+        this.result1 = result1;
+        this.result2 = result2;
+    }
+
+    public UUID getTeam1UUID() {
+        return team1UUID;
+    }
+
+    public void setTeam1UUID(UUID team1UUID) {
+        this.team1UUID = team1UUID;
+    }
+
+    public UUID getTeam2UUID() {
+        return team2UUID;
+    }
+
+    public void setTeam2UUID(UUID team2UUID) {
+        this.team2UUID = team2UUID;
     }
 
     public void setResult1(Integer result1) {

@@ -2,6 +2,7 @@ package com.kev.weeklynfl.bets;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.kev.weeklynfl.games.GameLine;
 import com.kev.weeklynfl.games.GameResult;
 import com.kev.weeklynfl.games.Team;
 
@@ -41,7 +42,7 @@ public class Bet {
     private Integer userId;
 
     @OneToOne
-    private GameResult gameResult;
+    private GameLine gameLine;
 
     @OneToOne
     private Team team1;
@@ -104,12 +105,12 @@ public class Bet {
         this.team2 = team2;
     }
 
-    public GameResult getGameResult() {
-        return gameResult;
+    public GameLine getGameLine() {
+        return gameLine;
     }
 
-    public void setGameResult(GameResult gameResult) {
-        this.gameResult = gameResult;
+    public void setGameLine(GameLine gameLine) {
+        this.gameLine = gameLine;
     }
 
     public void setBetValue(Integer betValue) {

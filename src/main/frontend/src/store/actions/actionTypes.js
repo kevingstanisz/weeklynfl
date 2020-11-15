@@ -1,4 +1,5 @@
 export const FETCH_GAMES_SUCCESS = 'FETCH_GAMES_SUCCESS';
+export const FETCH_BETS_SUCCESS = 'FETCH_BETS_SUCCESS';
 export const SAVE_BETS = 'SAVE_BETS';
 
 

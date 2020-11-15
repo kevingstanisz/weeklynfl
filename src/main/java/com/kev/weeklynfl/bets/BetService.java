@@ -269,20 +269,33 @@ public class BetService extends JwtUtils {
                     resultSet.getString("abb"));
         });
 
-        sql = "SELECT id, homeresult, awayresult FROM games WHERE week=" + week;
+        sql = "SELECT * FROM games WHERE week=" + week;
         Map<UUID, Integer> gameIndex = new HashMap<UUID, Integer>();
-        List<GameResult> gameList = jdbcTemplate.query(sql, (resultSet, i) -> {
+        List<GameLine> gameList = jdbcTemplate.query(sql, (resultSet, i) -> {
             gameIndex.put(UUID.fromString(resultSet.getString("id")), i);
-            return new GameResult(
+            return new GameLine(
                     UUID.fromString(resultSet.getString("id")),
-                    Integer.parseInt(resultSet.getString("homeresult")),
-                    Integer.parseInt(resultSet.getString("awayresult")));
+                    UUID.fromString(resultSet.getString("home")),
+                    UUID.fromString(resultSet.getString("away")),
+                    resultSet.getString("sphome") != null ? Double.parseDouble(resultSet.getString("sphome")) : 0,
+                    resultSet.getString("spaway") != null ? Double.parseDouble(resultSet.getString("spaway")) : 0,
+                    resultSet.getString("sphomeodds") != null ? Integer.parseInt(resultSet.getString("sphomeodds")) : 0,
+                    resultSet.getString("spawayodds") != null ? Integer.parseInt(resultSet.getString("spawayodds")) : 0,
+                    resultSet.getString("mlhome") != null ? Integer.parseInt(resultSet.getString("mlhome")) : 0,
+                    resultSet.getString("mlaway") != null ? Integer.parseInt(resultSet.getString("mlaway")) : 0,
+                    resultSet.getString("totalover") != null ? Double.parseDouble(resultSet.getString("totalover")) : 0,
+                    resultSet.getString("totalunder") != null ? Double.parseDouble(resultSet.getString("totalunder")) : 0,
+                    resultSet.getString("overodds") != null ? Integer.parseInt(resultSet.getString("overodds")) : 0,
+                    resultSet.getString("underodds") != null ? Integer.parseInt(resultSet.getString("underodds")) : 0,
+                    resultSet.getString("homeresult") != null ? Integer.parseInt(resultSet.getString("homeresult")) : 0,
+                    resultSet.getString("awayresult") != null ? Integer.parseInt(resultSet.getString("awayresult")) : 0);
         });
 
         for (Bet bet : allBets) {
-            bet.setGameResult(gameList.get(gameIndex.get(bet.getGameId())));
-            bet.setTeam1(teamList.get(teamIndex.get(bet.getTeam1())));
-            bet.setTeam2(teamList.get(teamIndex.get(bet.getTeam2())));
+            Integer betGameIndex = gameIndex.get(bet.getGameId());
+            bet.setGameLine(gameList.get(betGameIndex));
+            bet.setTeam1(teamList.get(teamIndex.get(gameList.get(betGameIndex).getTeam1UUID())));
+            bet.setTeam2(teamList.get(teamIndex.get(gameList.get(betGameIndex).getTeam2UUID())));
         }
 
         List<UserBet> userBetList = new ArrayList<UserBet>();

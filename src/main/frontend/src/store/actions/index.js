@@ -3,5 +3,6 @@ export {
     saveBets,
     closeModal,
     getResults,
-    gradeBets
+    gradeBets,
+    getBets
 } from './betGames'

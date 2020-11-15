@@ -9,6 +9,13 @@ export const fetchGamesSuccess = (games) => {
     }
 }
 
+export const fetchBetsSuccess = (bets) => {
+    return{
+        type: actionTypes.FETCH_BETS_SUCCESS,
+        bets: bets
+    }
+}
+
 export const adminCallSuccess = (message) => {
     return{
         type: actionTypes.ADMIN_CALL_SUCCESS,
@@ -72,6 +79,24 @@ export const getResults = () => {
         });
     }
 }
+
+export const getBets = () => {
+    console.log('get bets')
+    return dispatch => {
+
+        let url = '/games/bets/week/10';
+
+        axios.get(url, { headers: authHeader() })
+        .then(response => {
+            console.log(response)
+            dispatch(fetchBetsSuccess(response.data));
+        })
+        .catch(err => {
+            console.log('error' + err)
+        });
+    }
+}
+
 
 export const gradeBets = () => {
     return dispatch => {
