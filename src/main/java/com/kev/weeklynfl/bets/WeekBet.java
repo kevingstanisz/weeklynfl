@@ -1,0 +1,44 @@
+package com.kev.weeklynfl.bets;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import javax.persistence.*;
+import java.util.List;
+
+@Entity
+@JsonIgnoreProperties(allowGetters = true)
+public class WeekBet {
+
+    @Id
+    private Integer weekNumber;
+
+    @OneToMany(targetEntity=Bet.class, mappedBy="username", fetch= FetchType.EAGER)
+    private List<Bet> betList;
+
+    @JsonCreator
+    public WeekBet(){
+
+    }
+
+    public WeekBet(Integer weekNumber, List<Bet> betList) {
+        this.weekNumber = weekNumber;
+        this.betList = betList;
+    }
+
+    public Integer getUsername() {
+        return weekNumber;
+    }
+
+    public void setUsername(Integer weekNumber) {
+        this.weekNumber = weekNumber;
+    }
+
+    public List<Bet> getBetList() {
+        return betList;
+    }
+
+    public void setBetList(List<Bet> betList) {
+        this.betList = betList;
+    }
+}
