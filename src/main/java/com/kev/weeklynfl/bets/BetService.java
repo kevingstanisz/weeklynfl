@@ -98,7 +98,7 @@ public class BetService extends JwtUtils {
                     Integer.parseInt(resultSet.getString("bettype")));
         });
 
-        sql = "SELECT * FROM games WHERE week=" + weekNumber.getWeekNumber() + " AND homeresult IS NOT NULL";
+        sql = "SELECT * FROM games WHERE week=" + weekNumber.getWeekNumber() + " AND homeresult IS NOT NULL AND sphome IS NOT NULL";
 
         List<GameLine> gameScores = jdbcTemplate.query(sql, (resultSet, i) -> {
             return new GameLine(
