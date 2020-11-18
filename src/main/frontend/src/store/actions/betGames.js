@@ -84,7 +84,7 @@ export const getBets = () => {
     console.log('get bets')
     return dispatch => {
 
-        let url = '/games/bets/week/10';
+        let url = '/games/bets/week/11';
 
         axios.get(url, { headers: authHeader() })
         .then(response => {
@@ -107,6 +107,22 @@ export const gradeBets = () => {
         .then(response => {
             console.log(response)
             dispatch(adminCallSuccess('bets graded'));
+        })
+        .catch(err => {
+            console.log('error' + err)
+        });
+    }
+}
+
+export const saveLines = () => {
+    return dispatch => {
+
+        let url = '/games/savelines';
+
+        axios.post(url, '', { headers: authHeader() })
+        .then(response => {
+            console.log(response)
+            dispatch(adminCallSuccess('lines saved'));
         })
         .catch(err => {
             console.log('error' + err)

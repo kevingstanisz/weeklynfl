@@ -13,6 +13,7 @@ const Profile = props => {
   const onCloseModal = () => dispatch(actions.closeModal());
   const onSaveGameResults = () => dispatch(actions.getResults());
   const onSaveBets = () => dispatch(actions.gradeBets());
+  const onSaveLines = () => dispatch(actions.saveLines());
 
   const currentUser = useSelector(state => {
     return state.auth.user;
@@ -43,6 +44,10 @@ const Profile = props => {
     onSaveBets();
   }
 
+  const saveLines = () => {
+    onSaveLines();
+  }
+
   if (!currentUser) {
     return <Redirect to="/login" />;
   }
@@ -71,6 +76,7 @@ const Profile = props => {
       </ul>
       <Button clicked={saveGameResults} btnType="Success">Save Game Results</Button>
       <Button clicked={saveBets} btnType="Success">Grade Bets</Button>
+      <Button clicked={saveLines} btnType="Success">Save Lines</Button>
         <Modal show = {showModal}><Acknowledge  modalClosed = {closeModalHandler}>{modalMessage}</Acknowledge></Modal>
     </div>
   );
