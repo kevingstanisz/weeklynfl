@@ -13,7 +13,7 @@ public class WeekBet {
     @Id
     private Integer weekNumber;
 
-    @OneToMany(targetEntity=Bet.class, mappedBy="username", fetch= FetchType.EAGER)
+    @OneToMany(targetEntity=Bet.class, mappedBy="week", fetch= FetchType.EAGER)
     private List<Bet> betList;
 
     @JsonCreator
@@ -26,11 +26,11 @@ public class WeekBet {
         this.betList = betList;
     }
 
-    public Integer getUsername() {
+    public Integer getWeekNumber() {
         return weekNumber;
     }
 
-    public void setUsername(Integer weekNumber) {
+    public void setWeekNumber(Integer weekNumber) {
         this.weekNumber = weekNumber;
     }
 

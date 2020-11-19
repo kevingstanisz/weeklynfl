@@ -41,6 +41,8 @@ public class Bet {
     private String username;
     private Integer userId;
 
+    private Integer week;
+
     @OneToOne
     private GameLine gameLine;
 
@@ -87,6 +89,24 @@ public class Bet {
         this.betType = betType;
         this.betResult = betResult;
         this.totalWon = totalWon;
+    }
+
+    public Bet(Integer userID, UUID gameId, Integer betValue, Integer betType, Integer betResult, double totalWon, Integer week) {
+        this.userId = userID;
+        this.gameId = gameId;
+        this.betValue = betValue;
+        this.betType = betType;
+        this.betResult = betResult;
+        this.totalWon = totalWon;
+        this.week = week;
+    }
+
+    public Integer getWeek() {
+        return week;
+    }
+
+    public void setWeek(Integer week) {
+        this.week = week;
     }
 
     public Team getTeam1() {

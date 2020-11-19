@@ -320,4 +320,78 @@ public class BetService extends JwtUtils {
 
         return userBetList;
     }
+
+    public List<WeekBet> showUserBets(String user) {
+        String sql = "SELECT id FROM users WHERE username=?";
+
+        Integer userId = (Integer) jdbcTemplate.queryForObject(
+                sql, new Object[] { user }, Integer.class);
+
+        sql = "SELECT userid, gameId, betValue, betType, betResult, totalWon, week FROM bets WHERE userid =" + userId + " ORDER BY week";
+
+        List<Bet> allBets = jdbcTemplate.query(sql, (resultSet, i) -> {
+            return new Bet(
+                    Integer.parseInt(resultSet.getString("userid")),
+                    UUID.fromString(resultSet.getString("gameId")),
+                    Integer.parseInt(resultSet.getString("betValue")),
+                    Integer.parseInt(resultSet.getString("betType")),
+                    Integer.parseInt(resultSet.getString("betResult")),
+                    Double.parseDouble(resultSet.getString("totalWon")),
+                    Integer.parseInt(resultSet.getString("week")));
+        });
+
+
+        sql = "SELECT * FROM teams";
+        Map<UUID, Integer> teamIndex = new HashMap<UUID, Integer>();
+        List<Team> teamList = jdbcTemplate.query(sql, (resultSet, i) -> {
+            teamIndex.put(UUID.fromString(resultSet.getString("id")), i);
+            return new Team(
+                    resultSet.getString("name"),
+                    resultSet.getString("abb"));
+        });
+
+        sql = "SELECT * FROM games";
+        Map<UUID, Integer> gameIndex = new HashMap<UUID, Integer>();
+        List<GameLine> gameList = jdbcTemplate.query(sql, (resultSet, i) -> {
+            gameIndex.put(UUID.fromString(resultSet.getString("id")), i);
+            return new GameLine(
+                    UUID.fromString(resultSet.getString("id")),
+                    UUID.fromString(resultSet.getString("home")),
+                    UUID.fromString(resultSet.getString("away")),
+                    resultSet.getString("sphome") != null ? Double.parseDouble(resultSet.getString("sphome")) : 0,
+                    resultSet.getString("spaway") != null ? Double.parseDouble(resultSet.getString("spaway")) : 0,
+                    resultSet.getString("sphomeodds") != null ? Integer.parseInt(resultSet.getString("sphomeodds")) : 0,
+                    resultSet.getString("spawayodds") != null ? Integer.parseInt(resultSet.getString("spawayodds")) : 0,
+                    resultSet.getString("mlhome") != null ? Integer.parseInt(resultSet.getString("mlhome")) : 0,
+                    resultSet.getString("mlaway") != null ? Integer.parseInt(resultSet.getString("mlaway")) : 0,
+                    resultSet.getString("totalover") != null ? Double.parseDouble(resultSet.getString("totalover")) : 0,
+                    resultSet.getString("totalunder") != null ? Double.parseDouble(resultSet.getString("totalunder")) : 0,
+                    resultSet.getString("overodds") != null ? Integer.parseInt(resultSet.getString("overodds")) : 0,
+                    resultSet.getString("underodds") != null ? Integer.parseInt(resultSet.getString("underodds")) : 0,
+                    resultSet.getString("homeresult") != null ? Integer.parseInt(resultSet.getString("homeresult")) : 0,
+                    resultSet.getString("awayresult") != null ? Integer.parseInt(resultSet.getString("awayresult")) : 0);
+        });
+
+        for (Bet bet : allBets) {
+            Integer betGameIndex = gameIndex.get(bet.getGameId());
+            bet.setGameLine(gameList.get(betGameIndex));
+            bet.setTeam1(teamList.get(teamIndex.get(gameList.get(betGameIndex).getTeam1UUID())));
+            bet.setTeam2(teamList.get(teamIndex.get(gameList.get(betGameIndex).getTeam2UUID())));
+        }
+
+        List<WeekBet> weekBetList = new ArrayList<WeekBet>();
+
+        Set<Integer> weeks = new HashSet<Integer>();
+        for (Bet bet : allBets) {
+            if(!weeks.contains(bet.getWeek())) {
+                weeks.add(bet.getWeek());
+
+                weekBetList.add(new WeekBet(bet.getWeek(), new ArrayList<Bet>()));
+            }
+
+            weekBetList.get(weekBetList.size() - 1).getBetList().add(bet);
+        }
+
+        return weekBetList;
+    }
 }

@@ -84,7 +84,7 @@ export const getBets = () => {
     console.log('get bets')
     return dispatch => {
 
-        let url = '/games/bets/week/11';
+        let url = '/games/bets/user/kev';
 
         axios.get(url, { headers: authHeader() })
         .then(response => {

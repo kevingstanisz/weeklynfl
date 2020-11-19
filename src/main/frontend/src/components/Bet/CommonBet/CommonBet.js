@@ -103,7 +103,7 @@ const CommonBet = props => {
                 style = classes.Win
             }
 
-            return <td className = {style}>
+            return <td key = {index} className = {style}>
                 {betInWords}
                 <br></br>
                 {game.team1['teamAbr'] + '(' + game.gameLine.result1 + ') vs. ' + game.team2['teamAbr'] + '(' + game.gameLine.result2 + ')'}
@@ -117,16 +117,18 @@ const CommonBet = props => {
 
   return (
         <React.Fragment>
-            <h2>{props.bet.username}</h2>
+            <h2>{props.header}</h2>
             <table>
-                <tr>
-                    <td>
-                        Graded Bets: {wonBets}/{totalBetsGraded}
-                        <br></br>
-                        Total: ${totalWon}
-                    </td>
-                    {betsOutput}
-                </tr>
+                <tbody>
+                    <tr>
+                        <td>
+                            Graded Bets: {wonBets}/{totalBetsGraded}
+                            <br></br>
+                            Total: ${totalWon}
+                        </td>
+                        {betsOutput}
+                    </tr>
+                </tbody>
             </table>
         </React.Fragment>
   );

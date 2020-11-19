@@ -36,13 +36,14 @@ const ShowBets = props => {
     let betsOutput = null;
 
     if(stateBets != null){
-        console.log('hi')
-
-            betsOutput = stateBets.map((bet) => {
-            return <CommonBets bet = {bet}>
-            </CommonBets>
-            })
-        
+        betsOutput = stateBets.map((bet, i) => {
+            let header = bet.weekNumber != null ? bet.weekNumber : bet.username;
+            return(
+                <CommonBets key = {i}  bet = {bet} header = {header}>
+                </CommonBets>
+            )
+        })
+    
     }
 
     return (
