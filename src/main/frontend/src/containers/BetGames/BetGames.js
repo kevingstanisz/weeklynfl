@@ -11,6 +11,7 @@ import BetRequirements from '../../components/Bet/BetRequirements/BetRequirement
 import { updateObject, checkValidity } from '../../shared/utility';
 import game from '../../components/Game/Game';
 import { fetchGamesSuccess } from '../../store/actions/betGames';
+import lockWeek from '../../helpers/calcWeek'
 
 const BetGames = props => {
   const [stateBets, setBets] = useState([]);
@@ -151,6 +152,7 @@ const BetGames = props => {
       return <Game 
         key={index} 
         gameinfo={game} 
+        locked = {lockWeek()}
         betChange={( event ) => inputChangedHandler( event, game['id'], index )}
         checkedSp1 = {game['bets'] != null ? game['bets']['sp1'] : false}
         valueSp1= {game['bets'] != null ? game['bets']['sp1Value'] : 0}

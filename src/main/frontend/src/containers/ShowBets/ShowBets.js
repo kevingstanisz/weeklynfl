@@ -13,6 +13,7 @@ import game from '../../components/Game/Game';
 import { fetchGamesSuccess } from '../../store/actions/betGames';
 import CommonBets from '../../components/Bet/CommonBet/CommonBet'
 import { useParams } from "react-router";
+import calcWeek from "../../helpers/calcWeek"
 
 const ShowBets = props => {
     let { id } = useParams();
@@ -29,7 +30,7 @@ const ShowBets = props => {
 
     useEffect(() => {
         onGetBets(id)
-    }, []);
+    }, [id]);
 
     useEffect(() => {
         setBets(bets)

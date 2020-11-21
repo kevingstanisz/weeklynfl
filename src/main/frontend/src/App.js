@@ -22,6 +22,8 @@ import { clearMessage } from "./store/actions/message";
 
 import { history } from './helpers/history';
 
+import {calcWeek, lockWeek} from './helpers/calcWeek';
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -62,7 +64,7 @@ class App extends Component {
         <div>
           <nav className="navbar navbar-expand navbar-dark bg-dark">
             <Link to={"/"} className="navbar-brand">
-              bezKoder
+              Weekly NFL
             </Link>
             <div className="navbar-nav mr-auto">
               <li className="nav-item">
@@ -89,7 +91,7 @@ class App extends Component {
 
               {currentUser && (
                 <li className="nav-item">
-                  <Link to={"/weeklypicks/" + 11} className="nav-link">
+                  <Link to={"/picks/" + calcWeek()} className="nav-link">
                     Week Picks
                   </Link>
                 </li>
@@ -97,7 +99,7 @@ class App extends Component {
 
               {currentUser && (
                 <li className="nav-item">
-                  <Link to={"/userpicks/" + currentUser.username} className="nav-link">
+                  <Link to={"/picks/" + currentUser.username} className="nav-link">
                     User Picks
                   </Link>
                 </li>
@@ -141,8 +143,7 @@ class App extends Component {
               <Route exact path="/register" component={Register} />
               <Route exact path="/profile" component={Profile} />
               <Route path="/user" component={BoardUser} />
-              <Route path="/userpicks/:id" component={ShowBets} />
-              <Route path="/weeklypicks/:id" component={ShowBets} />
+              <Route path="/picks/:id" component={ShowBets} />
               {/* <Route path="/mod" component={BoardModerator} /> */}
               <Route path="/admin" component={ShowBets} />
             </Switch>
