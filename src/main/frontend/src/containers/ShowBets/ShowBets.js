@@ -42,7 +42,7 @@ const ShowBets = props => {
 
     if(stateBets != null){
         betsOutput = stateBets.map((bet, i) => {
-            let header = bet.weekNumber != null ? bet.weekNumber : bet.username;
+            let header = bet.weekNumber != null ? 'Week ' + bet.weekNumber : bet.username;
             return(
                 <CommonBets key = {i}  bet = {bet} header = {header}>
                 </CommonBets>
@@ -51,8 +51,17 @@ const ShowBets = props => {
     
     }
 
+    let header = null; 
+    if(isNaN(id)) {
+        header = id + `'s Picks`
+    }
+    else {
+        header = 'Week ' + id + ' Picks'
+    }
+
     return (
         <React.Fragment>
+            <h1>{header}</h1>
             {betsOutput}
         </React.Fragment>
     );

@@ -289,11 +289,7 @@ public class BetService extends JwtUtils {
                     resultSet.getString("awayresult") != null ? Integer.parseInt(resultSet.getString("awayresult")) : 0);
         });
 
-        System.out.println("hello");
-
         for (Bet bet : allBets) {
-            System.out.println("hi");
-            System.out.println(bet.toString());
             Integer betGameIndex = gameIndex.get(bet.getGameId());
             bet.setGameLine(gameList.get(betGameIndex));
             bet.setTeam1(teamList.get(teamIndex.get(gameList.get(betGameIndex).getTeam1UUID())));

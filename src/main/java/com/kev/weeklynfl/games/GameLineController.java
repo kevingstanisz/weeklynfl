@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("api/v1/games")
 @CrossOrigin("http://localhost:3000")
@@ -67,7 +69,7 @@ public class GameLineController {
      }
 
     @GetMapping(path = "bets/user/{user}")
-    public List<WeekBet> selectAllWeeklyBetGames(@PathVariable("user") String user){
+    public List<WeekBet> selectAllWeeklyBetGames(@PathVariable("user") String user) {
         return betService.showUserBets(user);
     }
 
