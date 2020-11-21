@@ -71,7 +71,7 @@ class App extends Component {
                 </Link>
               </li>
 
-              {showModeratorBoard && (
+              {/* {showModeratorBoard && (
                 <li className="nav-item">
                   <Link to={"/mod"} className="nav-link">
                     Moderator Board
@@ -85,12 +85,20 @@ class App extends Component {
                     Admin Board
                   </Link>
                 </li>
+              )} */}
+
+              {currentUser && (
+                <li className="nav-item">
+                  <Link to={"/weeklypicks/" + 11} className="nav-link">
+                    Week Picks
+                  </Link>
+                </li>
               )}
 
               {currentUser && (
                 <li className="nav-item">
-                  <Link to={"/user"} className="nav-link">
-                    User
+                  <Link to={"/userpicks/" + currentUser.username} className="nav-link">
+                    User Picks
                   </Link>
                 </li>
               )}
@@ -133,6 +141,8 @@ class App extends Component {
               <Route exact path="/register" component={Register} />
               <Route exact path="/profile" component={Profile} />
               <Route path="/user" component={BoardUser} />
+              <Route path="/userpicks/:id" component={ShowBets} />
+              <Route path="/weeklypicks/:id" component={ShowBets} />
               {/* <Route path="/mod" component={BoardModerator} /> */}
               <Route path="/admin" component={ShowBets} />
             </Switch>

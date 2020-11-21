@@ -80,11 +80,17 @@ export const getResults = () => {
     }
 }
 
-export const getBets = () => {
+export const getBets = (id) => {
     console.log('get bets')
     return dispatch => {
 
-        let url = '/games/bets/user/kev';
+        let url = null;
+        if(isNaN(id)) {
+            url = '/games/bets/user/' + id;
+        }
+        else {
+            url = '/games/bets/week/' + 11;
+        }
 
         axios.get(url, { headers: authHeader() })
         .then(response => {

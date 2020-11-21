@@ -12,19 +12,23 @@ import { updateObject, checkValidity } from '../../shared/utility';
 import game from '../../components/Game/Game';
 import { fetchGamesSuccess } from '../../store/actions/betGames';
 import CommonBets from '../../components/Bet/CommonBet/CommonBet'
+import { useParams } from "react-router";
 
 const ShowBets = props => {
+    let { id } = useParams();
+    console.log(id)
+
     const [stateBets, setBets] = useState([]);
 
     const dispatch = useDispatch();
-    const onGetBets = () => dispatch(actions.getBets());
+    const onGetBets = (id) => dispatch(actions.getBets(id));
 
     const bets = useSelector(state => {
         return state.betReducer.bets;
     }); 
 
     useEffect(() => {
-        onGetBets()
+        onGetBets(id)
     }, []);
 
     useEffect(() => {
