@@ -26,7 +26,9 @@ export function lockWeek() {
     //2 thursday @7pm
     let endWeekCentralTime = new Date(2020, 8, 10, 19 + 6 - (currentDateCentralTime.getTimezoneOffset() / 60))
 
-    return weeksBetween(startWeekCentralTime, currentDateCentralTime) == weeksBetween(endWeekCentralTime, currentDateCentralTime)
+    let truefalse =weeksBetween(startWeekCentralTime, currentDateCentralTime) == weeksBetween(endWeekCentralTime, currentDateCentralTime)
+
+    return (weeksBetween(startWeekCentralTime, currentDateCentralTime) == weeksBetween(endWeekCentralTime, currentDateCentralTime))
 }
 
 

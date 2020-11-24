@@ -63,13 +63,15 @@ export const saveBets = (betsToSave) => {
     }
 }
 
-export const getResults = () => {
+export const getResults = (week) => {
     console.log('get game results')
     return dispatch => {
 
         let url = '/games/getresults';
 
-        axios.post(url, '',{ headers: authHeader() })
+        console.log('WEEK IN GET RESULTS' + week)
+
+        axios.post(url, 12, { headers: authHeader() })
         .then(response => {
             console.log(response)
             dispatch(adminCallSuccess('game results saved'));
@@ -106,12 +108,12 @@ export const getBets = (id) => {
 }
 
 
-export const gradeBets = () => {
+export const gradeBets = (week) => {
     return dispatch => {
 
         let url = '/games/gradebets';
 
-        axios.post(url, '', { headers: authHeader() })
+        axios.post(url, week, { headers: authHeader() })
         .then(response => {
             console.log(response)
             dispatch(adminCallSuccess('bets graded'));

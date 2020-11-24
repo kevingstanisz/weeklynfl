@@ -7,12 +7,14 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import axios from '../../axios-games';
 import * as actions from '../../store/actions/index';
 import Button from '../UI/Button/Button'
+import calcWeek from "../../helpers/calcWeek"
+
 
 const Profile = props => {
   const dispatch = useDispatch();
   const onCloseModal = () => dispatch(actions.closeModal());
-  const onSaveGameResults = () => dispatch(actions.getResults());
-  const onSaveBets = () => dispatch(actions.gradeBets());
+  const onSaveGameResults = (week) => dispatch(actions.getResults(week));
+  const onSaveBets = (week) => dispatch(actions.gradeBets(week));
   const onSaveLines = () => dispatch(actions.saveLines());
 
   const currentUser = useSelector(state => {
@@ -37,15 +39,23 @@ const Profile = props => {
   }
 
   const saveGameResults = () => {
-    onSaveGameResults();
+    onSaveGameResults(calcWeek());
   }
 
   const saveBets = () => {
-    onSaveBets();
+    onSaveBets(calcWeek());
   }
 
   const saveLines = () => {
     onSaveLines();
+  }
+
+  const saveLastWeekGameResults = () => {
+    onSaveGameResults(calcWeek() - 1);
+  }
+
+  const saveLastWeekBets = () => {
+    onSaveBets(calcWeek() - 1);
   }
 
   if (!currentUser) {
@@ -74,10 +84,19 @@ const Profile = props => {
         {currentUser.roles &&
           currentUser.roles.map((role, index) => <li key={index}>{role}</li>)}
       </ul>
-      <Button clicked={saveGameResults} btnType="Success">Save Game Results</Button>
-      <Button clicked={saveBets} btnType="Success">Grade Bets</Button>
-      <Button clicked={saveLines} btnType="Success">Save Lines</Button>
-        <Modal show = {showModal}><Acknowledge  modalClosed = {closeModalHandler}>{modalMessage}</Acknowledge></Modal>
+      <ul>
+        <Button clicked={saveGameResults} btnType="Success">Save Game Results</Button>
+        <Button clicked={saveBets} btnType="Success">Grade Bets</Button>
+      </ul>
+      <ul>
+        <Button clicked={saveGameResults} btnType="Success">Save Last Week's Game Results</Button>
+        <Button clicked={saveBets} btnType="Success">Grade Last Week's Bets</Button>
+      </ul>
+      <ul>
+        <Button clicked={saveLines} btnType="Success">Save Lines</Button>
+      </ul>
+      
+      <Modal show = {showModal}><Acknowledge  modalClosed = {closeModalHandler}>{modalMessage}</Acknowledge></Modal>
     </div>
   );
 }

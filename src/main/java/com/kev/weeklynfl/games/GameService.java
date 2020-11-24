@@ -85,10 +85,8 @@ public class GameService {
         return teamUUID;
     }
 
-    public void getResults() throws Exception {
-        WeekNumber weekNumber = new WeekNumber();
-
-        String sql = "SELECT id FROM games WHERE week=" + weekNumber.getWeekNumber();
+    public void getResults(Integer week) throws Exception {
+        String sql = "SELECT id FROM games WHERE week=" + week;
 
         Map<UUID, Integer> gameIndex = new HashMap<UUID, Integer>();
         List<GameLine> gameLines = jdbcTemplate.query(sql, (resultSet, i) -> {
@@ -101,7 +99,7 @@ public class GameService {
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://api.sportradar.us/nfl/official/trial/v6/en/games/2020/REG/" + weekNumber.getWeekNumber() + "/schedule.json?api_key=9pgtwyez27zssnpce7vv7967"))
+                .uri(URI.create("http://api.sportradar.us/nfl/official/trial/v6/en/games/2020/REG/" + week + "/schedule.json?api_key=9pgtwyez27zssnpce7vv7967"))
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());

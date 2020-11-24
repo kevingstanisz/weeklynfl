@@ -11,7 +11,7 @@ import BetRequirements from '../../components/Bet/BetRequirements/BetRequirement
 import { updateObject, checkValidity } from '../../shared/utility';
 import game from '../../components/Game/Game';
 import { fetchGamesSuccess } from '../../store/actions/betGames';
-import lockWeek from '../../helpers/calcWeek'
+import {lockWeek} from '../../helpers/calcWeek'
 
 const BetGames = props => {
   const [stateBets, setBets] = useState([]);
