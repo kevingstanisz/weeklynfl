@@ -1,5 +1,6 @@
 package com.kev.weeklynfl.games;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import org.apache.tomcat.jni.Local;
 import org.hibernate.metamodel.internal.JpaStaticMetaModelPopulationSetting;
 
@@ -16,9 +17,16 @@ public class WeekNumber {
 
     private long weekNumber;
     private boolean picksLocked;
+    private int weekNumberFromFrontend;
 
+    @JsonCreator
+    public WeekNumber(int weekNumberFromFrontend) {
+        System.out.println("top constructor running");
+        this.weekNumberFromFrontend = weekNumberFromFrontend;
+    }
 
     public WeekNumber() {
+        System.out.println("bottom constructor running");
         Calendar firstWeekCalendar = Calendar.getInstance();
         firstWeekCalendar.set(2020, Calendar.SEPTEMBER, 8, 4,0, 0);
         LocalDate firstWeekDate = LocalDateTime.ofInstant(firstWeekCalendar.toInstant(), firstWeekCalendar.getTimeZone().toZoneId()).toLocalDate();
@@ -34,6 +42,14 @@ public class WeekNumber {
         }
     }
 
+    public int getWeekNumberFromFrontend() {
+        return weekNumberFromFrontend;
+    }
+
+    public void setWeekNumberFromFrontend(int weekNumberFromFrontend) {
+        this.weekNumberFromFrontend = weekNumberFromFrontend;
+    }
+
     // remove week 0 - start at week 1
     public long getWeekNumber() {
         return weekNumber + 1;
@@ -41,6 +57,15 @@ public class WeekNumber {
 
     public boolean isPicksLocked() {
         return picksLocked;
+    }
+
+    @Override
+    public String toString() {
+        return "WeekNumber{" +
+                "weekNumber=" + weekNumber +
+                ", picksLocked=" + picksLocked +
+                ", weekNumberFromFrontend=" + weekNumberFromFrontend +
+                '}';
     }
 
     public static void main(String[] args) {

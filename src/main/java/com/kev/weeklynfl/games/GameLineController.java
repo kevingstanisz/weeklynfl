@@ -35,17 +35,17 @@ public class GameLineController {
     }
 
     @PostMapping(path = "getresults")
-    public void saveGameResults(@RequestBody Integer week){
+    public void saveGameResults(@RequestBody WeekNumber week){
         try {
-            gameService.getResults(week);
+            gameService.getResults(week.getWeekNumberFromFrontend());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @PostMapping(path = "gradebets")
-    public void gradeBets(@RequestBody Integer week){
-        betService.gradeBets(week);
+    public void gradeBets(@RequestBody WeekNumber week){
+        betService.gradeBets(week.getWeekNumberFromFrontend());
     }
 
     @PostMapping(path = "savebets")

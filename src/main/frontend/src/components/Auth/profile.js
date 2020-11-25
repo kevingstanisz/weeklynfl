@@ -89,8 +89,8 @@ const Profile = props => {
         <Button clicked={saveBets} btnType="Success">Grade Bets</Button>
       </ul>
       <ul>
-        <Button clicked={saveGameResults} btnType="Success">Save Last Week's Game Results</Button>
-        <Button clicked={saveBets} btnType="Success">Grade Last Week's Bets</Button>
+        <Button clicked={saveLastWeekGameResults} btnType="Success">Save Last Week's Game Results</Button>
+        <Button clicked={saveLastWeekBets} btnType="Success">Grade Last Week's Bets</Button>
       </ul>
       <ul>
         <Button clicked={saveLines} btnType="Success">Save Lines</Button>

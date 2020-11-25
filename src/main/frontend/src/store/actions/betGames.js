@@ -71,7 +71,9 @@ export const getResults = (week) => {
 
         console.log('WEEK IN GET RESULTS' + week)
 
-        axios.post(url, 12, { headers: authHeader() })
+        let body = {weekNumberFromFrontend: week}
+
+        axios.post(url, body, { headers: authHeader() })
         .then(response => {
             console.log(response)
             dispatch(adminCallSuccess('game results saved'));
@@ -113,7 +115,9 @@ export const gradeBets = (week) => {
 
         let url = '/games/gradebets';
 
-        axios.post(url, week, { headers: authHeader() })
+        let body = {weekNumberFromFrontend: week}
+
+        axios.post(url, body, { headers: authHeader() })
         .then(response => {
             console.log(response)
             dispatch(adminCallSuccess('bets graded'));

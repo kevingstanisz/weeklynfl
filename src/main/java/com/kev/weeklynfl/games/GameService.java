@@ -86,6 +86,7 @@ public class GameService {
     }
 
     public void getResults(Integer week) throws Exception {
+        System.out.println(week);
         String sql = "SELECT id FROM games WHERE week=" + week;
 
         Map<UUID, Integer> gameIndex = new HashMap<UUID, Integer>();
