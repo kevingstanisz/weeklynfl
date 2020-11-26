@@ -14,6 +14,7 @@ import { fetchGamesSuccess } from '../../store/actions/betGames';
 import CommonBets from '../../components/Bet/CommonBet/CommonBet'
 import { useParams } from "react-router";
 import calcWeek from "../../helpers/calcWeek"
+import Dropdown from 'react-bootstrap/Dropdown';
 
 const ShowBets = props => {
     let { id } = useParams();
@@ -61,6 +62,17 @@ const ShowBets = props => {
 
     return (
         <React.Fragment>
+            <Dropdown>
+            <Dropdown.Toggle variant="success" id="dropdown-basic">
+                Dropdown Button
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu>
+                <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+                <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
+                <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+            </Dropdown.Menu>
+            </Dropdown>
             <h1>{header}</h1>
             {betsOutput}
         </React.Fragment>
