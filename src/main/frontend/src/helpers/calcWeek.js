@@ -1,4 +1,5 @@
 function weeksBetween(d1, d2) {
+    console.log('days between ' + (d2 - d1) / (7 * 24 * 60 * 60 * 1000))
     return Math.ceil((d2 - d1) / (7 * 24 * 60 * 60 * 1000));
 }
 

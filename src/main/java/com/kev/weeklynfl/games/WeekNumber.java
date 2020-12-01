@@ -21,12 +21,10 @@ public class WeekNumber {
 
     @JsonCreator
     public WeekNumber(int weekNumberFromFrontend) {
-        System.out.println("top constructor running");
         this.weekNumberFromFrontend = weekNumberFromFrontend;
     }
 
     public WeekNumber() {
-        System.out.println("bottom constructor running");
         Calendar firstWeekCalendar = Calendar.getInstance();
         firstWeekCalendar.set(2020, Calendar.SEPTEMBER, 8, 4,0, 0);
         LocalDate firstWeekDate = LocalDateTime.ofInstant(firstWeekCalendar.toInstant(), firstWeekCalendar.getTimeZone().toZoneId()).toLocalDate();
