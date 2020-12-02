@@ -73,6 +73,11 @@ public class GameLineController {
         return betService.showUserBets(user);
     }
 
+    @GetMapping(path = "leagueinfo")
+    public LeagueInfo getLeagueInfo() {
+        return gameService.getLeagueInfo();
+    }
+
 //    @PutMapping
 //    public void saveGameLines() {
 //        gameLineService.saveGameLines();

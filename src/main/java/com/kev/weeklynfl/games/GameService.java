@@ -129,4 +129,23 @@ public class GameService {
             }
         }
     }
+
+    public LeagueInfo getLeagueInfo() {
+        String sql = "SELECT username FROM users";
+
+        List<String> usernameList = jdbcTemplate.query(sql, (resultSet, i) -> {
+            return resultSet.getString("username");
+        });
+
+        sql = "SELECT week FROM bets ORDER BY week";
+
+        List<Integer> weekList = jdbcTemplate.query(sql, (resultSet, i) -> {
+            return resultSet.getInt("week");
+        });
+
+        List<Integer> weekSet = new ArrayList<>(
+                new HashSet<>(weekList));
+
+        return new LeagueInfo(weekSet, usernameList);
+    }
 }

@@ -24,18 +24,28 @@ const ShowBets = props => {
 
     const dispatch = useDispatch();
     const onGetBets = (id) => dispatch(actions.getBets(id));
+    const onGetLeagueInfo = () => dispatch(actions.getLeagueInfo());
 
     const bets = useSelector(state => {
         return state.betReducer.bets;
     }); 
 
+    const users = useSelector(state => {
+        return state.betReducer.users;
+    }); 
+
+    const weeks = useSelector(state => {
+        return state.betReducer.weeks;
+    }); 
+
     useEffect(() => {
+        onGetLeagueInfo()
         onGetBets(id)
     }, [id]);
 
     useEffect(() => {
         setBets(bets)
-      }, [bets]);
+    }, [bets]);
 
     console.log(bets)
 
@@ -53,27 +63,37 @@ const ShowBets = props => {
     }
 
     let header = null; 
+    let dropdown = null; 
     if(isNaN(id)) {
         header = id + `'s Picks`
+        dropdown = users.map((user) => {
+            return(
+                <Dropdown.Item href={'/picks/' + user}>{user}</Dropdown.Item>
+            )
+        })
     }
     else {
         header = 'Week ' + id + ' Picks'
+        dropdown = weeks.map((week) => {
+            return(
+                <Dropdown.Item href={'/picks/' + week}>{week}</Dropdown.Item>
+            )
+        })
     }
 
     return (
         <React.Fragment>
-            <Dropdown>
-            <Dropdown.Toggle variant="success" id="dropdown-basic">
-                Dropdown Button
-            </Dropdown.Toggle>
+            <p>
+                <Dropdown>
+                <Dropdown.Toggle variant="primary" id="dropdown-basic">
+                    {header}
+                </Dropdown.Toggle>
 
-            <Dropdown.Menu>
-                <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-            </Dropdown.Menu>
-            </Dropdown>
-            <h1>{header}</h1>
+                <Dropdown.Menu>
+                    {dropdown}
+                </Dropdown.Menu>
+                </Dropdown>
+            </p>
             {betsOutput}
         </React.Fragment>
     );

@@ -4,7 +4,9 @@ const initialState = {
     games: [],
     modal: false,
     message: '',
-    error: ''
+    error: '',
+    weeks: [],
+    users: []
 };
 
 const reducer = ( state = initialState, action ) => {
@@ -19,6 +21,15 @@ const reducer = ( state = initialState, action ) => {
             return{
                 ...state,
                 bets: action.bets
+            };
+        
+        case actionTypes.FETCH_LEAGUE_INFO:
+            console.log(action.weeks)
+            console.log(action.users)
+            return{
+                ...state,
+                weeks: action.weeks,
+                users: action.users
             };
 
         case actionTypes.ADMIN_CALL_SUCCESS:

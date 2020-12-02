@@ -5,5 +5,6 @@ export {
     getResults,
     gradeBets,
     getBets,
-    saveLines
+    saveLines,
+    getLeagueInfo
 } from './betGames'

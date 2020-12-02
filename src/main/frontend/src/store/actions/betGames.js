@@ -2,6 +2,14 @@ import * as actionTypes from './actionTypes'
 import axios from '../../axios-games';
 import authHeader from '../../services/auth-header';
 
+export const fetchLeagueInfoSuccess = (leagueInfo) => {
+    return{
+        type: actionTypes.FETCH_LEAGUE_INFO,
+        weeks: leagueInfo.weeks,
+        users: leagueInfo.users
+    }
+}
+
 export const fetchGamesSuccess = (games) => {
     return{
         type: actionTypes.FETCH_GAMES_SUCCESS,
@@ -80,6 +88,20 @@ export const getResults = (week) => {
         })
         .catch(err => {
             console.log('error' + err)
+        });
+    }
+}
+
+export const getLeagueInfo = () => {
+    console.log('hello league info')
+    return dispatch => {
+        axios.get('games/leagueinfo', { headers: authHeader() })
+        .then(res => {
+            console.log(res.data)
+            dispatch(fetchLeagueInfoSuccess(res.data))
+        })
+        .catch(err => {
+            console.log(err);
         });
     }
 }
